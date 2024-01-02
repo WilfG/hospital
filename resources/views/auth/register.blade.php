@@ -99,7 +99,7 @@
 
             <p id="nav">
                 <a class="float-left" href="#" title="Password Lost and Found">Mot de passe oublié?</a>
-                <a class="float-right" href="/login" title="Sign Up">Sign In</a>
+                <a class="float-right" href="/login" title="Se Connecter">Se Connecter</a>
             </p>
             <div class="clearfix"></div>
             <div class="col-lg-12 text-center register-social">

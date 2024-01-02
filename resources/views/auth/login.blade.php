@@ -53,27 +53,29 @@
         <div id="login" class="login loginpage offset-xl-4 col-xl-4 offset-lg-3 col-lg-6 offset-md-3 col-md-6 col-offset-0 col-12">
             <h1><a href="#" title="Login Page" tabindex="-1">Hospital</a></h1>
 
-            <form name="loginform" id="loginform" action="index.html" method="post">
+            <form name="loginform" id="loginform" action="/login" method="post">
+                @csrf
+                @method('POST')
                 <p>
                     <label for="user_login">Email<br />
-                        <input type="text" name="log" id="user_login" class="input" value="demo" size="20" /></label>
+                        <input type="text" name="email" id="user_login" class="input" value="demo" size="20" /></label>
                 </p>
                 <p>
                     <label for="user_pass">Password<br />
-                        <input type="password" name="pwd" id="user_pass" class="input" value="demo" size="20" /></label>
+                        <input type="password" name="password" id="user_pass" class="input" value="demo" size="20" /></label>
                 </p>
                 <p class="forgetmenot">
                     <label class="icheck-label form-label" for="rememberme"><input name="rememberme" type="checkbox" id="rememberme" value="forever" class="skin-square-orange" checked> Remember me</label>
                 </p>
 
                 <p class="submit">
-                    <input type="submit" name="wp-submit" id="wp-submit" class="btn btn-orange btn-block" value="Sign In" />
+                    <input type="submit" name="wp-submit" id="wp-submit" class="btn btn-orange btn-block" value="Se Connecter" />
                 </p>
             </form>
 
             <p id="nav">
-                <a class="float-left" href="#" title="Password Lost and Found">Forgot password?</a>
-                <a class="float-right" href="ui-register.html" title="Sign Up">Sign Up</a>
+                <a class="float-left" href="#" title="Password Lost and Found">Mot de passe?</a>
+                <a class="float-right" href="/register" title="S'inscrire">S'inscrire'</a>
             </p>
 
 

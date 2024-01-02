@@ -1,6 +1,7 @@
  <!-- LOAD FILES AT PAGE END FOR FASTER LOADING -->
  <!-- CORE JS FRAMEWORK - START -->
- <script src="{{asset('/assets/js/jquery-3.2.1.min.js')}}" type="text/javascript"></script>
+ <script src="{{asset('/assets/js/jquery-3.4.1.min.js')}}" type="text/javascript"></script>
+ <script src="{{asset('/assets/js/popper.min.js')}}" type="text/javascript"></script> 
  <script src="{{asset('/assets/js/jquery.easing.min.js')}}" type="text/javascript"></script>
  <script src="{{asset('/assets/plugins/bootstrap/js/bootstrap.min.js')}}" type="text/javascript"></script>
  <script src="{{asset('/assets/plugins/pace/pace.min.js')}}" type="text/javascript"></script>
