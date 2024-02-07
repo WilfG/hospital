@@ -14,14 +14,14 @@
         <!-- START CONTENT -->
         <section id="main-content" class=" ">
             <section class="wrapper" style='margin-top:60px;display:inline-block;width:100%;padding:15px 0 0 15px;'>
-                <div class='col-xl-12 col-lg-12 col-md-12 col-12'>
+                <!-- <div class='col-xl-12 col-lg-12 col-md-12 col-12'>
                     <div class="page-title">
                         <div class="float-left">
                             <h1 class="title">Tableau de bord</h1>
                         </div>
                     </div>
                 </div>
-                <div class="clearfix"></div>
+                <div class="clearfix"></div> -->
 
                 <div class="col-lg-12">
                     <section class="box ">

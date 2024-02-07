@@ -50,9 +50,9 @@
 
 
     <div class="login-wrapper">
-        <div id="login" class="login loginpage offset-xl-4 col-xl-4 offset-lg-3 col-lg-6 offset-md-3 col-md-6 col-offset-0 col-12">
-            <h1><a href="#" title="Login Page" tabindex="-1">Hospital</a></h1>
-
+        <div id="login" class="login loginpage offset-xl-4 col-xl-4 offset-lg-3 col-lg-6 offset-md-3 col-md-6 col-offset-0 col-12" >
+           
+            <img src="{{asset('assets/images/login-logo.png')}}" style="width: 300px; height:100px;" />
             <form name="loginform" id="loginform" action="/login" method="post">
                 @csrf
                 @method('POST')

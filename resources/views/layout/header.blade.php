@@ -305,7 +305,7 @@
              <ul class="info-menu right-links list-inline list-unstyled">
                  <li class="profile list-inline-item">
                      <a href="#" data-toggle="dropdown" class="toggle">
-                         <img src="{{asset('data/profile/profile-hospital.jpg')}}" alt="user-image" class="rounded-circle img-inline">
+                         <img src="{{asset('storage/' . auth()->user()->photo)}}" alt="user-image" class="rounded-circle img-inline">
                          <span>{{auth()->user()->lastname . ' '. auth()->user()->firstname}} <i class="fa fa-angle-down"></i></span>
                      </a>
                      <ul class="dropdown-menu profile animated fadeIn">
