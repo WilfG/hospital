@@ -52,6 +52,7 @@
                 <form action="{{route('expenses.update', $expense->id)}}" method="post">
                     @csrf
                     @METHOD('PUT')
+                    
                     <div class="col-xl-8 col-lg-8 col-md-9 col-12">
                         <div class="form-group">
                             <label class="form-label" for="label_categorie">Catégories</label>
@@ -64,43 +65,10 @@
                             </select>
                         </div>
                         <div class="form-group">
-                            <label class="form-label" for="auteur_id">Auteur de la dépense</label>
-                            <select name="auteur_id" class="form-control" id="auteur_id">
-                                <option value=""></option>
-                                @foreach($users as $user)
-                                <option value="{{$user->id}}" @if($user->id == $expense->user_id) {{'selected'}} @endif  >{{$user->firstname . ' ' . $user->lastname}}</option>
-                                @endforeach
-                            </select>
-                        </div>
-
-                        <div class="form-group">
-                            <label class="form-label" for="reason">Motif</label>
+                            <label class="form-label" for="reason">justificatif</label>
                             <span class="desc"></span>
                             <div class="controls">
-                                <input type="text" name="reason" value="{{$expense->reason}}" class="form-control" id="reason">
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label class="form-label" for="reason">Montant</label>
-                            <span class="desc"></span>
-                            <div class="controls">
-                                <input type="number" min="0" name="amount" value="{{$expense->amount}}" class="form-control" id="reason">
-                            </div>
-                        </div>
-
-
-                        <div class="form-group">
-                            <label class="form-label" for="expense_date">Date</label>
-                            <!-- <span class="desc">e.g. "04/03/2015"</span> -->
-                            <div class="controls">
-                                <input type="text" name="expense_date" value="{{$expense->expense_date}}" class="form-control datepicker" data-format="yyyy-mm-dd">
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label class="form-label" for="note">Note</label>
-                            <!-- <span class="desc">e.g. "04/03/2015"</span> -->
-                            <div class="controls">
-                                <textarea name="note" id="note" class="form-control" data-format="yyyy-mm-dd">{{$expense->note}}</textarea>
+                                <input type="file" name="justificatif" value="{{$expense->justificatf}}"  class="form-control" id="reason" >
                             </div>
                         </div>
 

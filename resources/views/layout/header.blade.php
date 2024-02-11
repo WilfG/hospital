@@ -1,8 +1,11 @@
  <!-- START TOPBAR -->
  <div class='page-topbar '>
+     @if(!Route::is('dashboard'))
+
      <div class='logo-area'>
 
      </div>
+     @endif
      <div class='quick-area'>
          <div class='float-left'>
              <ul class="info-menu left-links list-inline list-unstyled">
@@ -12,10 +15,10 @@
                      </a>
                  </li>
                  <li class="message-toggle-wrapper list-inline-item">
-                     <a href="#" data-toggle="dropdown" class="toggle">
+                     <!-- <a href="#" data-toggle="dropdown" class="toggle">
                          <i class="fa fa-envelope"></i>
                          <span class="badge badge-pill badge-primary">7</span>
-                     </a>
+                     </a> -->
                      <ul class="dropdown-menu messages animated fadeIn">
 
                          <li class="list dropdown-item">
@@ -171,10 +174,10 @@
 
                  </li>
                  <li class="notify-toggle-wrapper list-inline-item">
-                     <a href="#" data-toggle="dropdown" class="toggle">
+                     <!-- <a href="#" data-toggle="dropdown" class="toggle">
                          <i class="fa fa-bell"></i>
                          <span class="badge badge-pill badge-orange">3</span>
-                     </a>
+                     </a> -->
                      <ul class="dropdown-menu notifications animated fadeIn">
                          <li class="total dropdown-item">
                              <span class="small">
@@ -311,26 +314,26 @@
                      <ul class="dropdown-menu profile animated fadeIn">
                          <li class="dropdown-item">
                              <a href="#settings">
-                                 <i class="fa fa-wrench"></i>
-                                 Settings
+                                 <i class="fa fa-money"></i>
+                                 Gestion de depenses
                              </a>
                          </li>
                          <li class="dropdown-item">
                              <a href="#profile">
                                  <i class="fa fa-user"></i>
-                                 Profile
+                                 Gestion des utilisateurs
                              </a>
                          </li>
-                         <li class="dropdown-item">
+                         <!-- <li class="dropdown-item">
                              <a href="#help">
                                  <i class="fa fa-info"></i>
                                  Help
                              </a>
-                         </li>
+                         </li> -->
                          <li class="last dropdown-item">
                              <a href="#" onclick="document.getElementById('logout-form').submit()">
                                  <i class="fa fa-lock"></i>
-                                 Logout
+                                 Deconnexion
                                  <form action="/logout" method="POST" id="logout-form">
                                      @csrf
                                  </form>
@@ -339,11 +342,11 @@
                      </ul>
                  </li>
                  <li class="chat-toggle-wrapper list-inline-item">
-                     <a href="#" data-toggle="chatbar" class="toggle_chat">
+                     <!-- <a href="#" data-toggle="chatbar" class="toggle_chat">
                          <i class="fa fa-comments"></i>
                          <span class="badge badge-pill badge-warning">9</span>
                          <i class="fa fa-times"></i>
-                     </a>
+                     </a> -->
                  </li>
              </ul>
          </div>

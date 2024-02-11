@@ -24,22 +24,19 @@ return new class extends Migration
     {
         Schema::create($this->tableName, function (Blueprint $table) {
             $table->id();
-            $table->float('amount');
-            $table->string('reason', 100);
-            $table->string('note')->nullable();
-            $table->date('expense_date');
+            $table->string('justificatif')->nullable();
             $table->index("expenses_category_id");
-            $table->index("user_id");
-
+            $table->index("request_id");
+           
             $table->foreignId('expenses_category_id')
                 ->references('id')->on('expenses_categories')
                 ->onDelete('cascade')
                 ->onUpdate('cascade');
+            $table->foreignId('request_id')
+                ->references('id')->on('expense_requests')
+                ->onDelete('cascade')
+                ->onUpdate('cascade');
                 
-            $table->foreignId('user_id')
-            ->references('id')->on('users')
-            ->onDelete('cascade')
-            ->onUpdate('cascade');
             $table->timestamps();
                 
         });

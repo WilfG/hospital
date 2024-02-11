@@ -7,7 +7,7 @@
     <div class="page-title">
 
         <div class="float-left">
-            <h1 class="title">Enregistrement d'une dépense</h1>
+            <h1 class="title">Enregistrement d'une demande de dépense</h1>
         </div>
 
         <div class="float-right d-none">
@@ -16,10 +16,10 @@
                     <a href="index.html"><i class="fa fa-home"></i>Home</a>
                 </li>
                 <li>
-                    <a href="hos-patients.html">Dépenses</a>
+                    <a href="hos-patients.html">Demande de Dépenses</a>
                 </li>
                 <li class="active">
-                    <strong>Enregistrement d'une dépense</strong>
+                    <strong>Enregistrement d'une demande de dépense</strong>
                 </li>
             </ol>
         </div>
@@ -49,33 +49,46 @@
                     {{ session('status') }}
                 </div>
                 @endif
-                <form action="{{route('expenses.store')}}" method="post" enctype="multipart/form-data">
+                <form action="{{route('expenses_requests.store')}}" method="post">
                     @csrf
                     @METHOD('POST')
-
-                    <input type="hidden" name="reqExpense" value="{{$reqExpense->id}}">
                     <div class="col-xl-8 col-lg-8 col-md-9 col-12">
-                        <div class="form-group">
-                            <label class="form-label" for="label_categorie">Catégories</label>
-                            <span class="desc"></span>
-                            <select name="label_categorie" class="form-control" id="label_categorie" required>
-                                <option value=""></option>
-                                @foreach($categories as $categorie)
-                                <option value="{{$categorie->id}}">{{$categorie->label}}</option>
-                                @endforeach
-                            </select>
-                        </div>
-                        
+                       <input type="hidden" name="auteur_id" value="{{auth()->user()->id}}">
+                       
 
                         <div class="form-group">
-                            <label class="form-label" for="reason">justificatif</label>
+                            <label class="form-label" for="reason">Motif</label>
                             <span class="desc"></span>
                             <div class="controls">
-                                <input type="file" name="justificatif"  class="form-control" id="reason" >
+                                <input type="text" name="reason" value="{{old('reason')}}" class="form-control" id="reason" required>
                             </div>
                         </div>
-                       
-                          
+                        <div class="form-group">
+                            <label class="form-label" for="reason">Montant</label>
+                            <span class="desc"></span>
+                            <div class="controls">
+                                <input type="number" min="0" name="amount" value="{{old('amount')}}" class="form-control" id="reason" required>
+                            </div>
+                        </div>
+
+
+                        <div class="form-group">
+                            <label class="form-label" for="expense_date">Date</label>
+                            <!-- <span class="desc">e.g. "04/03/2015"</span> -->
+                            <div class="controls">
+                                <input type="text" name="expense_date" value="{{old('expense_date')}}" class="form-control datepicker" data-format="yyyy-mm-dd" required>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label" for="note">Note</label>
+                            <!-- <span class="desc">e.g. "04/03/2015"</span> -->
+                            <div class="controls">
+                                <textarea name="note" id="note" class="form-control" data-format="yyyy-mm-dd">{{old('note')}}</textarea>
+                            </div>
+                        </div>
+
+
+
                     </div>
 
                     <div class="col-xl-8 col-lg-8 col-md-9 col-12 padding-bottom-30">

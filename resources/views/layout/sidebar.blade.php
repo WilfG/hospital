@@ -34,13 +34,17 @@
          <ul class='wraplist'>
 
 
+             @if (Request::is('dashboard/*'))
              <li class="open">
                  <a href="/dashboard">
                      <i class="fa fa-dashboard"></i>
                      <span class="title">Dashboard</span>
                  </a>
              </li>
-             <li class="">
+             @endif
+
+             @if (Request::is('facturation_gestion_financiere/*'))
+             <li class="open">
                  <a href="javascript:;">
                      <i class="fa fa-dollar "></i>
                      <span class="title">Dépenses</span>
@@ -50,8 +54,21 @@
                      <li>
                          <a class="" href="{{route('expenses.index')}}">Liste des dépenses</a>
                      </li>
-                     <li>
-                         <a class="" href="{{route('expenses.create')}}">Enregistrer une dépense</a>
+                    
+                     <li class="">
+                         <a href="javascript:;">
+                             <i class="fa fa-list "></i>
+                             <span class="title">Demande de dépense</span>
+                             <span class="arrow "></span>
+                         </a>
+                         <ul class="sub-menu">
+                             <li>
+                                 <a class="" href="{{route('expenses_requests.index')}}">Liste des demande de dépenses</a>
+                             </li>
+                             <li>
+                                 <a class="" href="{{route('expenses_requests.create')}}">Enregistrer une demande</a>
+                             </li>
+                         </ul>
                      </li>
                      <li class="">
                          <a href="javascript:;">
@@ -71,7 +88,11 @@
                  </ul>
 
              </li>
-             <li class="">
+             @endif
+
+             @if (Request::is('gestion_utilisateur/*'))
+
+             <li class="open">
                  <a href="javascript:;">
                      <i class="fa fa-user-md"></i>
                      <span class="title">Gestion des utilisateurs</span>
@@ -119,7 +140,7 @@
                  </ul>
 
              </li>
-
+             @endif
              <!--
              <li class="">
                  <a href="javascript:;">

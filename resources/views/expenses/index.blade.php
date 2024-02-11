@@ -20,16 +20,14 @@
             </div>
             @endif
 
-            <a href="{{route('expenses.create')}}" class="btn btn-primary" title="Enregistrer une dépense"><i class="fa fa-plus-circle"></i> Enregistrer une dépense</a>
-
+          
             <table id="example-11" class="display table table-hover table-condensed" cellspacing="0" width="100%">
                 <thead>
                     <tr>
                         <th>Auteur</th>
-                        <th>Motif</th>
-                        <th>Montant</th>
+                        <th>Amount</th>
+                        <th>Reason</th>
                         <th>Catégorie</th>
-                        <th>Date</th>
                         <th>Note</th>
                         <th>Actions</th>
 
@@ -39,11 +37,10 @@
                 <tbody>
                     @foreach($expenses as $expense)
                     <tr>
-                        <td>{{$expense->user->lastname . ' '. $expense->user->firstname}}</td>
-                        <td>{{$expense->reason}}</td>
+                        <td>{{$expense->lastname . ' '. $expense->firstname}}</td>
                         <td>{{$expense->amount}}</td>
-                        <td>{{$expense->expenses_category->label}}</td>
-                        <td>{{$expense->expense_date}}</td>
+                        <td>{{$expense->reason}}</td>
+                        <td>{{$expense->label}}</td>
                         <td>{{$expense->note}}</td>
                         <td style="display:flex;">
                             <a href="{{route('expenses.edit', $expense->id)}}" class="btn btn-warning btn-sm" style="margin: 2px;"><i class="fa fa-pencil" title="Modifier"></i></a>

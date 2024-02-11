@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Expense;
+use App\Models\ExpenseRequest;
 use App\Models\Expenses_category;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -21,19 +22,22 @@ class ExpenseController extends Controller
             return redirect()->back()->with('errors', "Vous n'avez pas la permission de Voir la liste des dépenses.");
         }
 
-        $expenses = Expense::all();
+        $expenses = DB::table('expenses')
+        ->join('expense_requests', 'expenses.request_id', 'expense_requests.id')
+        ->join('users', 'expense_requests.user_id', 'users.id')
+        ->join('expenses_categories', 'expenses.expenses_category_id', 'expenses_categories.id')
+        ->get(['expenses.*', 'expense_requests.*','users.lastname', 'users.firstname','expenses_categories.label']); 
         return view('expenses.index', compact('expenses'));
     }
 
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
+    public function create($req)
     {
-
         $categories = DB::table('expenses_categories')->get();
-        $users = DB::table('users')->get();
-        return view('expenses.create', ['categories' => $categories, 'users' => $users]);
+        $reqExpense = ExpenseRequest::find($req);
+        return view('expenses.create', ['categories' => $categories, 'reqExpense' => $reqExpense]);
     }
 
     /**
@@ -47,29 +51,32 @@ class ExpenseController extends Controller
                 return redirect()->back()->with('errors', "Vous n'avez pas la permission d'Enregistrer une dépense.");
             }
 
-            $validator = Validator::make($request->only(['label_categorie', 'reason', 'amount', 'expense_date', 'auteur_id', 'note']), [
+            $validator = Validator::make($request->only(['reqExpense','label_categorie','justificatif']), [
                 'label_categorie' => ['required', 'string'],
-                'reason' => ['required', 'min:2', 'max:100', 'string'],
-                'amount' => ['required', 'numeric'],
-                'auteur_id' => ['required', 'numeric'],
-                'expense_date' => ['required', 'string'],
-                'note' => ['nullable', 'string'],
+                'reqExpense' => ['required', 'numeric'],
+                'justificatif' => 'nullable',
             ]);
 
             if ($validator->fails()) {
                 return redirect()->back()->with('errors', $validator->errors());
             }
 
-            $note = $request->note ? $request->note : null;
-            $expense = Expense::create([
-                'amount' => $request->amount,
-                'reason' => $request->reason,
-                'note' => $note,
-                'expenses_category_id' => $request->label_categorie,
-                'user_id' => $request->auteur_id,
-                'expense_date' => $request->expense_date
-
-            ]);
+            if ($request->hasFile('justificatif')) {
+                $path = $request->file('justificatif')->store('depenses');
+                $expense = Expense::create([
+                    'justificatif' => $path,
+                    'request_id' => $request->reqExpense,
+                    'expenses_category_id' => $request->label_categorie,
+                    
+                ]);
+            }else {
+                # code...
+                $expense = Expense::create([
+                    'request_id' => $request->reqExpense,
+                    'expenses_category_id' => $request->label_categorie,
+                    
+                ]);
+            }
 
             if ($expense) {
                 return redirect()->route('expenses.index');
@@ -110,27 +117,30 @@ class ExpenseController extends Controller
             }
             $validator = Validator::make($request->only(['label_categorie', 'reason', 'amount', 'expense_date', 'auteur_id', 'note']), [
                 'label_categorie' => ['required', 'string'],
-                'reason' => ['required', 'min:2', 'max:100', 'string'],
-                'amount' => ['required', 'numeric'],
-                'auteur_id' => ['required', 'numeric'],
-                'expense_date' => ['required', 'string'],
-                'note' => ['nullable', 'string'],
+                'reqExpense' => ['required', 'numeric'],
+                'justificatif' => 'nullable',
             ]);
 
             if ($validator->fails()) {
                 return redirect()->back()->with('errors', $validator->errors());
             }
 
-            $note = $request->note ? $request->note : null;
-            $expense->update([
-                'amount' => $request->amount,
-                'reason' => $request->reason,
-                'note' => $note,
-                'expenses_category_id' => $request->label_categorie,
-                'user_id' => $request->auteur_id,
-                'expense_date' => $request->expense_date
-
-            ]);
+            if ($request->hasFile('justificatif')) {
+                $path = $request->file('justificatif')->store('depenses');
+                $expense = Expense::create([
+                    'justificatif' => $path,
+                    'request_id' => $request->reqExpense,
+                    'expenses_category_id' => $request->label_categorie,
+                    
+                ]);
+            }else {
+                # code...
+                $expense = Expense::create([
+                    'request_id' => $request->reqExpense,
+                    'expenses_category_id' => $request->label_categorie,
+                    
+                ]);
+            }
 
             if ($expense) {
                 return redirect()->route('expenses.index');

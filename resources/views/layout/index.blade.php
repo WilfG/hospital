@@ -9,10 +9,15 @@
     @include('layout.header')
     <!-- START CONTAINER -->
     <div class="page-container row-fluid">
-        @include('layout.sidebar')
-
+        @if(!Route::is('dashboard'))
+            @include('layout.sidebar')
+        @endif
         <!-- START CONTENT -->
-        <section id="main-content" class=" ">
+        @if(!Route::is('dashboard'))
+            <section id="main-content" class=" ">
+        @else
+            <section id="main-content" style="margin: auto !important;">
+        @endif
             <section class="wrapper" style='margin-top:60px;display:inline-block;width:100%;padding:15px 0 0 15px;'>
                 <!-- <div class='col-xl-12 col-lg-12 col-md-12 col-12'>
                     <div class="page-title">

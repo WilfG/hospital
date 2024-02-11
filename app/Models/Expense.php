@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Expense extends Model
 {
@@ -11,11 +12,14 @@ class Expense extends Model
 
     protected $guarded = [];
 
-    public function user(){
-        return $this->belongsTo(User::class);
-    }
+   
     public function expenses_category(){
         return $this->belongsTo(Expenses_category::class);
+    }
+
+    public function expenseRequest()
+    {
+        return $this->belongsTo(ExpenseRequest::class);
     }
 
 
