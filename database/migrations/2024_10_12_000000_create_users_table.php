@@ -36,6 +36,7 @@ return new class extends Migration
             $table->string('photo', 255)->nullable();
             $table->index('role_id')->nullable();
             $table->foreignId('role_id')->references('id')->on('roles')->onDelete('cascade');
+            $table->boolean('prod')->nullable();
             $table->rememberToken();
             $table->timestamps();
                 

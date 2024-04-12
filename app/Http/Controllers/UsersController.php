@@ -9,6 +9,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Validator;
 use Nette\Utils\Random;
@@ -86,7 +87,7 @@ class UsersController extends Controller
                     'role_id' => $request->role_id
                 ]);
 
-                return redirect()->back()->with(['status' => 'Utilisateur créé avec succès.']);
+                // return redirect()->back()->with(['status' => 'Utilisateur créé avec succès.']);
             } else {
                 $user = User::create(
                     [
@@ -98,10 +99,14 @@ class UsersController extends Controller
                         'role_id' => $request->role_id
                     ]
                 );
-
-                return redirect()->back()->with(['status' => 'Informations créé avec succès.']);
+            }
+            if ($user) {
+                # code...
+                Log::channel('gestion_utilisateur')->info(auth()->user()->lastname . ' ' . auth()->user()->firstname . ' a créé un utilisateur');
+                return redirect()->back()->with(['status' => 'Utilisateur créé avec succès.']);
             }
         } catch (\Throwable $th) {
+            Log::channel('gestion_utilisateur')->info(auth()->user()->lastname . ' ' . auth()->user()->firstname . ' a essayé de créer un utilisateur sans succès');
             return redirect()->back()->with(['errors' => $th->getMessage()]);
         }
     }
@@ -133,59 +138,69 @@ class UsersController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //dd($request->all());
-        $checkPermission = $this->checkPermission(auth()->user()->id, "Editer les informations d'un utilisateur");
-        if ($checkPermission == false) {
-            return redirect()->back()->with('errors', "Vous n'avez pas la permission de modifier les informations d'un utilisateur.");
-        }
-
-        $validator =  Validator::make($request->all(), [
-            'lastname' => ['nullable', 'string', 'max:255'],
-            'firstname' => ['nullable', 'string', 'max:255'],
-            'role' => ['nullable', 'string', 'max:11'],
-            'email' => ['nullable', 'email'],
-            'phoneNumber' => ['nullable', 'numeric'],
-            'photo' => 'nullable',
-            'photo' => 'file|mimes:jpeg,jpg,png,gif,PNG,JPG,JPEG',
-        ]);
-
-        if ($validator->fails()) {
-            return redirect()->back()->with('errors', $validator->errors());
-        }
-
-        $user_to_update = DB::table('users')->where('id', $id)->first();
-
-        if ($request->hasfile('photo')) {
-            $path = $request->file('photo')->store('usersPhotos', 'public');
-            // dd($path);
-            $user = DB::table('users')->where('id', $id)->update([
-                'lastname' => $request->lastname,
-                'firstname' => $request->firstname,
-                'email' => $request->email,
-                'phoneNumber' => $request->phoneNumber,
-                'photo' => $path,
-                'role_id' => $request->role
-
-            ]);
-            if ($user_to_update->photo) {
-                # code...
-                if (file_exists(storage_path($user_to_update->photo))) {
-                    unlink(storage_path($user_to_update->photo));
-                }
+        try {
+            //code...
+            //dd($request->all());
+            $checkPermission = $this->checkPermission(auth()->user()->id, "Editer les informations d'un utilisateur");
+            if ($checkPermission == false) {
+                return redirect()->back()->with('errors', "Vous n'avez pas la permission de modifier les informations d'un utilisateur.");
             }
 
-            return redirect()->back()->with(['status' => 'Informations modifiées avec succès.']);
-        } else {
-            $user = DB::table('users')->where('id', $id)->update(
-                [
+            $validator =  Validator::make($request->all(), [
+                'lastname' => ['nullable', 'string', 'max:255'],
+                'firstname' => ['nullable', 'string', 'max:255'],
+                'role' => ['nullable', 'string', 'max:11'],
+                'email' => ['nullable', 'email'],
+                'phoneNumber' => ['nullable', 'numeric'],
+                'photo' => 'nullable',
+                'photo' => 'file|mimes:jpeg,jpg,png,gif,PNG,JPG,JPEG',
+            ]);
+
+            if ($validator->fails()) {
+                return redirect()->back()->with('errors', $validator->errors());
+            }
+
+            $user_to_update = DB::table('users')->where('id', $id)->first();
+
+            if ($request->hasfile('photo')) {
+                $path = $request->file('photo')->store('usersPhotos', 'public');
+                // dd($path);
+                $user = DB::table('users')->where('id', $id)->update([
                     'lastname' => $request->lastname,
                     'firstname' => $request->firstname,
                     'email' => $request->email,
                     'phoneNumber' => $request->phoneNumber,
+                    'photo' => $path,
                     'role_id' => $request->role
-                ]
-            );
-            return redirect()->back()->with(['status' => 'Informations modifiées avec succès.']);
+
+                ]);
+                if ($user_to_update->photo) {
+                    # code...
+                    if (file_exists(storage_path($user_to_update->photo))) {
+                        unlink(storage_path($user_to_update->photo));
+                    }
+                }
+
+                // return redirect()->back()->with(['status' => 'Informations modifiées avec succès.']);
+            } else {
+                $user = DB::table('users')->where('id', $id)->update(
+                    [
+                        'lastname' => $request->lastname,
+                        'firstname' => $request->firstname,
+                        'email' => $request->email,
+                        'phoneNumber' => $request->phoneNumber,
+                        'role_id' => $request->role
+                    ]
+                );
+            }
+            if ($user) {
+                 Log::channel('gestion_utilisateur')->info(auth()->user()->lastname . ' ' . auth()->user()->firstname . ' a modifié un utilisateur');
+                return redirect()->back()->with(['status' => 'Informations modifiées avec succès.']);
+            }
+        } catch (\Throwable $th) {
+            Log::channel('gestion_utilisateur')->info(auth()->user()->lastname . ' ' . auth()->user()->firstname . ' a essayé de modifier les informations d\'un utilisateur sans succès');
+            return redirect()->back()->with(['errors' => $th->getMessage()]);
+
         }
     }
 
@@ -309,11 +324,12 @@ class UsersController extends Controller
 
             if ($user) {
                 $user->delete();
+                Log::channel('gestion_utilisateur')->info(auth()->user()->lastname . ' ' . auth()->user()->firstname . ' a supprimé l\'utilisateur '. $user->lastname . ' '. $user->firstname);
                 return redirect()->back()->with('success', 'Utilisateur supprimé avec succes.');
             }
         } catch (\Throwable $th) {
+            Log::channel('gestion_utilisateur')->info(auth()->user()->lastname . ' ' . auth()->user()->firstname . ' a essayé de supprimer un utilisateur sans succès');
             return redirect()->back()->with('errors', $th->getMessage());
-
         }
     }
 }

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Permission;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Validator;
 
 class PermissionController extends Controller
@@ -16,6 +17,7 @@ class PermissionController extends Controller
     {
         $checkPermission = $this->checkPermission(auth()->user()->id, 'Voir la liste des permissions');
         if ($checkPermission == false) {
+            Log::channel('gestion_utilisateur')->info(auth()->user()->lastname . ' ' . auth()->user()->firstname . ' a essayé de créer une permission sans succès');
             return redirect()->back()->with('errors', "Vous n'avez pas la permission de Voir la liste des permissions.");
         }
 
@@ -40,6 +42,7 @@ class PermissionController extends Controller
 
             $checkPermission = $this->checkPermission(auth()->user()->id, 'Créer une permission');
             if ($checkPermission == false) {
+                Log::channel('gestion_utilisateur')->info(auth()->user()->lastname . ' ' . auth()->user()->firstname . ' a essayé de Créer une permission sans succès');
                 return redirect()->back()->with('errors', "Vous n'avez pas la permission de Créer une permission.");
             }
 
@@ -55,9 +58,11 @@ class PermissionController extends Controller
                 'label_permission' => $request->label
             ]);
             if ($permission) {
+                Log::channel('gestion_utilisateur')->info(auth()->user()->lastname . ' ' . auth()->user()->firstname . ' a créé la permission  ' . $request->label_permission);
                 return redirect()->route('permissions.index');
             }
         } catch (\Throwable $th) {
+            Log::channel('gestion_utilisateur')->info(auth()->user()->lastname . ' ' . auth()->user()->firstname . ' a essayé de supprimer une permission sans succès');
             return redirect()->back()->with(['errors' => $th->getMessage()]);
         }
     }
@@ -88,6 +93,7 @@ class PermissionController extends Controller
 
             $checkPermission = $this->checkPermission(auth()->user()->id, 'Modifier une permission');
             if ($checkPermission == false) {
+                Log::channel('gestion_utilisateur')->info(auth()->user()->lastname . ' ' . auth()->user()->firstname . ' a essayé de modifier la requête de dépense ' . Permission::find($id)->label_permission . ' sans succès');
                 return redirect()->back()->with('errors', "Vous n'avez pas la permission de Modifier une permission.");
             }
 
@@ -99,13 +105,15 @@ class PermissionController extends Controller
                 return redirect()->back()->with('errors', $validator->errors());
             }
 
-            $role = DB::table('permissions')->where('id', $id)->update([
+            $permission = DB::table('permissions')->where('id', $id)->update([
                 'label_permission' => $request->label
             ]);
-            if ($role) {
+            if ($permission) {
+                Log::channel('gestion_utilisateur')->info(auth()->user()->lastname . ' ' . auth()->user()->firstname . ' a modifié  ' . $request->label_permission);
                 return redirect()->route('permissions.index');
             }
         } catch (\Throwable $th) {
+            Log::channel('gestion_utilisateur')->info(auth()->user()->lastname . ' ' . auth()->user()->firstname . ' a essayé de modifier la permission ' . $request->label_permission);
             return redirect()->back()->with(['errors' => $th->getMessage()]);
         }
     }
@@ -119,14 +127,17 @@ class PermissionController extends Controller
 
             $checkPermission = $this->checkPermission(auth()->user()->id, 'Supprimer une permission');
             if ($checkPermission == false) {
+                Log::channel('gestion_utilisateur')->info(auth()->user()->lastname . ' ' . auth()->user()->firstname . ' a essayé de supprimer une permission sans succès');
                 return redirect()->back()->with('errors', "Vous n'avez pas la permission de Supprimer une permission.");
             }
 
             if ($permission) {
+                Log::channel('gestion_utilisateur')->info(auth()->user()->lastname . ' ' . auth()->user()->firstname . ' a supprimé la permission ' . $permission->label_permission);
                 $permission->delete();
                 return redirect()->back()->with('success', 'Permission supprimée avec succes.');
             }
         } catch (\Throwable $th) {
+            Log::channel('gestion_utilisateur')->info(auth()->user()->lastname . ' ' . auth()->user()->firstname . ' a essayé de supprimer une permission sans succès');
             return redirect()->back()->with('errors', $th->getMessage());
         }
     }

@@ -23,7 +23,8 @@ return new class extends Migration
     {
         Schema::create($this->tableName, function (Blueprint $table) {
             $table->id();
-            $table->string('DrugName', 100);
+            $table->string('name', 100);
+            $table->string('description');
             $table->string('Manufacturer', 100)->nullable();
             $table->timestamps();
 

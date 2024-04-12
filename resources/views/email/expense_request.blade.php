@@ -7,19 +7,7 @@
 
 <body>
 
-    <div>
-        Bonjour {{ $name }},
-        <br>
-        {{ auth()->user()->firstname. ' '. auth()->user()->lastname }} vient de faire une demande de depense.
-        <br>
-        Cliquez sur le lien ci-dessous pour valider.
-        <br>
-
-        <a href="{{ env('APP_URL')}}/facturation_gestion_financiere/expenses_requests" class=" btn btn-success">Valider sa demande</a>
-
-        <br />
-    </div>
-
+   
     <table class="m_1023891192925991957inner-body" align="center" width="570" cellpadding="0" cellspacing="0" role="presentation" style="box-sizing:border-box;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif,'Apple Color Emoji','Segoe UI Emoji','Segoe UI Symbol';background-color:#ffffff;border-color:#e8e5ef;border-radius:2px;border-width:1px;margin:0 auto;padding:0;width:570px">
 
         <tbody>
@@ -39,7 +27,24 @@
                                                         <tbody>
                                                             <tr>
                                                                 <td style="box-sizing:border-box;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif,'Apple Color Emoji','Segoe UI Emoji','Segoe UI Symbol'">
-                                                                    <span href="#" class="m_1023891192925991957button" rel="noopener" style="box-sizing:border-box;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif,'Apple Color Emoji','Segoe UI Emoji','Segoe UI Symbol';border-radius:4px;color:#fff;display:inline-block;overflow:hidden;text-decoration:none;background-color:#2d3748;border-bottom:8px solid #2d3748;border-left:18px solid #2d3748;border-right:18px solid #2d3748;border-top:8px solid #2d3748"></span>
+                                                                    Bonjour {{ $name }},
+                                                                    <br>
+                                                                    {{ auth()->user()->firstname. ' '. auth()->user()->lastname }} vient de faire une requête de depense.
+                                                                    <br>
+                                                                    Détails de la requête:
+                                                                    <br>
+                                                                    Numéro: {{$code}}
+                                                                    <br>
+                                                                    Titre: {{$expenseReq->reason}}
+                                                                    <br>
+                                                                    Description: {{$expenseReq->note}}
+                                                                    <br>
+                                                                    Montant: {{$expenseReq->amount}} FCFA
+                                                                    <br>
+                                                                    Cliquez sur le lien ci-dessous pour valider.
+                                                                    <br>
+                                                                    <a href="{{ env('APP_URL')}}/facturation_gestion_financiere/expenses_requests" class=" btn btn-success btn-lg">Valider sa requête</a>
+
                                                                 </td>
                                                             </tr>
                                                         </tbody>

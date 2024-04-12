@@ -6,6 +6,7 @@ use App\Models\Permission;
 use App\Models\Role;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Validator;
 
 class RoleController extends Controller
@@ -60,9 +61,11 @@ class RoleController extends Controller
             $role->permissions()->attach($request->permissions);
 
             if ($role) {
+                Log::channel('gestion_utilisateur')->info(auth()->user()->lastname . ' ' . auth()->user()->firstname . ' a créé un rôle (profil utilisateur)');
                 return redirect()->route('roles.index');
             }
         } catch (\Throwable $th) {
+            Log::channel('gestion_utilisateur')->info(auth()->user()->lastname . ' ' . auth()->user()->firstname . ' a essayé de créer un rôle (profil utilisateur) sans succès');
             return redirect()->back()->with(['errors' => $th->getMessage()]);
         }
     }
@@ -110,9 +113,11 @@ class RoleController extends Controller
             ]);
             $role->permissions()->sync($request->permissions);
             if ($role) {
+                Log::channel('gestion_utilisateur')->info(auth()->user()->lastname . ' ' . auth()->user()->firstname . ' a modifié un rôle(profil utilisateur)');
                 return redirect()->route('roles.index');
             }
         } catch (\Throwable $th) {
+            Log::channel('gestion_utilisateur')->info(auth()->user()->lastname . ' ' . auth()->user()->firstname . ' a essayé de modifier les informations d\'un rôle(profil utilisateur) sans succès');
             return redirect()->back()->with(['errors' => $th->getMessage()]);
         }
     }
@@ -130,10 +135,12 @@ class RoleController extends Controller
             }
 
             if ($role) {
+                Log::channel('gestion_utilisateur')->info(auth()->user()->lastname . ' ' . auth()->user()->firstname . ' a supprimé le rôle ' . $role->role_label);
                 $role->delete();
                 return redirect()->back()->with('success', 'Rôle supprimé avec succes.');
             }
         } catch (\Throwable $th) {
+            Log::channel('gestion_utilisateur')->info(auth()->user()->lastname . ' ' . auth()->user()->firstname . ' a essayé de supprimer le rôle(profil utilisateur)' . $role->role_label . ' sans succès');
             return redirect()->back()->with('errors', $th->getMessage());
         }
     }

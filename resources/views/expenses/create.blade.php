@@ -54,7 +54,20 @@
                     @METHOD('POST')
 
                     <input type="hidden" name="reqExpense" value="{{$reqExpense->id}}">
+
                     <div class="col-xl-8 col-lg-8 col-md-9 col-12">
+                        <div class="form-group">
+                            <label class="form-label" for="label_categorie">Titre</label>
+                            <input type="text" class="form-control" readonly value="{{$reqExpense->reason}}">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label" for="label_categorie">Montant</label>
+                            <input type="text" class="form-control" readonly value="{{$reqExpense->amount}}">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label" for="label_categorie">Description</label>
+                            <input type="text" class="form-control" readonly value="{{$reqExpense->note}}">
+                        </div>
                         <div class="form-group">
                             <label class="form-label" for="label_categorie">Catégories</label>
                             <span class="desc"></span>
@@ -65,17 +78,17 @@
                                 @endforeach
                             </select>
                         </div>
-                        
+
 
                         <div class="form-group">
                             <label class="form-label" for="reason">justificatif</label>
                             <span class="desc"></span>
                             <div class="controls">
-                                <input type="file" name="justificatif"  class="form-control" id="reason" >
+                                <input type="file" name="justificatif" class="form-control" id="reason">
                             </div>
                         </div>
-                       
-                          
+
+
                     </div>
 
                     <div class="col-xl-8 col-lg-8 col-md-9 col-12 padding-bottom-30">

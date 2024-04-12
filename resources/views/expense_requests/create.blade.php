@@ -7,7 +7,7 @@
     <div class="page-title">
 
         <div class="float-left">
-            <h1 class="title">Enregistrement d'une demande de dépense</h1>
+            <h1 class="title">Enregistrement d'une requête de dépense</h1>
         </div>
 
         <div class="float-right d-none">
@@ -16,10 +16,10 @@
                     <a href="index.html"><i class="fa fa-home"></i>Home</a>
                 </li>
                 <li>
-                    <a href="hos-patients.html">Demande de Dépenses</a>
+                    <a href="hos-patients.html">Requête de Dépenses</a>
                 </li>
                 <li class="active">
-                    <strong>Enregistrement d'une demande de dépense</strong>
+                    <strong>Enregistrement d'une requête de dépense</strong>
                 </li>
             </ol>
         </div>
@@ -49,7 +49,7 @@
                     {{ session('status') }}
                 </div>
                 @endif
-                <form action="{{route('expenses_requests.store')}}" method="post">
+                <form action="{{route('expenses_requests.store')}}" method="post" enctype="multipart/form-data">
                     @csrf
                     @METHOD('POST')
                     <div class="col-xl-8 col-lg-8 col-md-9 col-12">
@@ -87,7 +87,13 @@
                             </div>
                         </div>
 
-
+                        <div class="form-group">
+                            <label class="form-label" for="justificatif_req">justificatif de la requête</label>
+                            <span class="desc"></span>
+                            <div class="controls">
+                                <input type="file" name="justificatif_req" class="form-control" id="justificatif_req">
+                            </div>
+                        </div>
 
                     </div>
 

@@ -8,6 +8,7 @@ use App\Models\Expenses_category;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Validator;
 
 class ExpenseController extends Controller
@@ -23,10 +24,11 @@ class ExpenseController extends Controller
         }
 
         $expenses = DB::table('expenses')
-        ->join('expense_requests', 'expenses.request_id', 'expense_requests.id')
-        ->join('users', 'expense_requests.user_id', 'users.id')
-        ->join('expenses_categories', 'expenses.expenses_category_id', 'expenses_categories.id')
-        ->get(['expenses.*', 'expense_requests.*','users.lastname', 'users.firstname','expenses_categories.label']); 
+            ->join('expense_requests', 'expenses.request_id', 'expense_requests.id')
+            ->join('users', 'expense_requests.user_id', 'users.id')
+            ->join('expenses_categories', 'expenses.expenses_category_id', 'expenses_categories.id')
+            ->get(['expenses.*', 'expense_requests.*', 'users.lastname', 'users.firstname', 'expenses_categories.label']);
+        Log::channel('gestion_facturation_log')->info(auth()->user()->lastname . ' ' . auth()->user()->firstname . ' a visité la liste des dépenses');
         return view('expenses.index', compact('expenses'));
     }
 
@@ -51,10 +53,28 @@ class ExpenseController extends Controller
                 return redirect()->back()->with('errors', "Vous n'avez pas la permission d'Enregistrer une dépense.");
             }
 
-            $validator = Validator::make($request->only(['reqExpense','label_categorie','justificatif']), [
+            Validator::extend('custom_file_type', function ($attribute, $value, $parameters, $validator) {
+                // Define allowed MIME types for images and documents
+                $allowedMimeTypes = [
+                    'image/jpeg',
+                    'image/png',
+                    'image/gif',
+                    'application/pdf',
+                    'application/msword',
+                    'application/vnd.openxmlformats-officedocument.wordprocessingml.document', // for .docx
+                ];
+
+                // Get the MIME type of the file
+                $fileMimeType = $value->getClientMimeType();
+
+                // Check if the MIME type is in the list of allowed MIME types
+                return in_array($fileMimeType, $allowedMimeTypes);
+            });
+
+            $validator = Validator::make($request->only(['reqExpense', 'label_categorie', 'justificatif']), [
                 'label_categorie' => ['required', 'string'],
                 'reqExpense' => ['required', 'numeric'],
-                'justificatif' => 'nullable',
+                'justificatif' => 'required|file|custom_file_type'
             ]);
 
             if ($validator->fails()) {
@@ -62,26 +82,28 @@ class ExpenseController extends Controller
             }
 
             if ($request->hasFile('justificatif')) {
-                $path = $request->file('justificatif')->store('depenses');
+                $path = $request->file('justificatif')->store('depenses', 'public');
                 $expense = Expense::create([
                     'justificatif' => $path,
                     'request_id' => $request->reqExpense,
                     'expenses_category_id' => $request->label_categorie,
-                    
+
                 ]);
-            }else {
+            } else {
                 # code...
                 $expense = Expense::create([
                     'request_id' => $request->reqExpense,
                     'expenses_category_id' => $request->label_categorie,
-                    
+
                 ]);
             }
 
             if ($expense) {
+                Log::channel('gestion_facturation_log')->info(auth()->user()->lastname . ' ' . auth()->user()->firstname . ' a effectué une dépense');
                 return redirect()->route('expenses.index');
             }
         } catch (\Throwable $th) {
+            Log::channel('gestion_facturation_log')->info(auth()->user()->lastname . ' ' . auth()->user()->firstname . ' a essayé de créer une dépense sans succès');
             return redirect()->back()->with('errors', $th->getMessage());
         }
     }
@@ -126,26 +148,28 @@ class ExpenseController extends Controller
             }
 
             if ($request->hasFile('justificatif')) {
-                $path = $request->file('justificatif')->store('depenses');
+                $path = $request->file('justificatif')->store('depenses', 'public');
                 $expense = Expense::create([
                     'justificatif' => $path,
                     'request_id' => $request->reqExpense,
                     'expenses_category_id' => $request->label_categorie,
-                    
+
                 ]);
-            }else {
+            } else {
                 # code...
                 $expense = Expense::create([
                     'request_id' => $request->reqExpense,
                     'expenses_category_id' => $request->label_categorie,
-                    
+
                 ]);
             }
 
             if ($expense) {
+                Log::channel('gestion_facturation_log')->info(auth()->user()->lastname . ' ' . auth()->user()->firstname . ' a modifié une dépense');
                 return redirect()->route('expenses.index');
             }
         } catch (\Throwable $th) {
+            Log::channel('gestion_facturation_log')->info(auth()->user()->lastname . ' ' . auth()->user()->firstname . ' a essayé de modifier une dépense sans succès');
             return redirect()->back()->with('errors', $th->getMessage());
         }
     }
@@ -162,10 +186,12 @@ class ExpenseController extends Controller
             }
 
             if ($expense) {
+                Log::channel('gestion_facturation_log')->info(auth()->user()->lastname . ' ' . auth()->user()->firstname . ' a supprimé la requête de dépense ' . $expense->code);
                 $expense->delete();
                 return redirect()->back()->with('success', 'Dépense supprimée avec succes.');
             }
         } catch (\Throwable $th) {
+            Log::channel('gestion_facturation_log')->info(auth()->user()->lastname . ' ' . auth()->user()->firstname . ' a essayé de supprimer la requête de dépense ' . $expense->code . ' sans succès');
             return redirect()->back()->with('errors', $th->getMessage());
         }
     }

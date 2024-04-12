@@ -36,6 +36,15 @@
                 </div>
             </a>
         </div>
+        <div class="col-lg-4 col-md-5 col-12">
+            <a href="gestion_stock/drugs" class="db_dynamicbar">
+                <div class="r1_graph1 db_box">
+                    <span class='bold'>Gestion du stock</span>
+                    <span class='float-right'><small></small></span>
+                    <div class="clearfix"></div>
+                </div>
+            </a>
+        </div>
         <!-- <div class="r1_graph2 db_box">
                 <span class='bold'>2332</span>
                 <span class='float-right'><small>USERS ONLINE</small></span>

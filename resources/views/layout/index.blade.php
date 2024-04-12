@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html class=" ">
+<html lang="en">
 
 @include('layout.head')
 
@@ -8,232 +8,252 @@
 <body class=" ">
     @include('layout.header')
     <!-- START CONTAINER -->
-    <div class="page-container row-fluid">
-        @if(!Route::is('dashboard'))
-            @include('layout.sidebar')
-        @endif
-        <!-- START CONTENT -->
-        @if(!Route::is('dashboard'))
-            <section id="main-content" class=" ">
-        @else
-            <section id="main-content" style="margin: auto !important;">
-        @endif
-            <section class="wrapper" style='margin-top:60px;display:inline-block;width:100%;padding:15px 0 0 15px;'>
-                <!-- <div class='col-xl-12 col-lg-12 col-md-12 col-12'>
-                    <div class="page-title">
-                        <div class="float-left">
-                            <h1 class="title">Tableau de bord</h1>
+    @include('layout.sidebar')
+
+    <div class="content">
+
+        <!-- Start Page Header -->
+        <div class="page-header">
+            <h1 class="title">Tableau de bord</h1>
+            <ol class="breadcrumb">
+                <li class="active">Bonjour {{auth()->user()->firstname . ' '.auth()->user()->lastname .' !! Bienvenu dans votre tableau de bord.' }}</li>
+            </ol>
+
+            <!-- Start Page Header Right Div -->
+            <div class="right">
+                <div class="btn-group" role="group" aria-label="...">
+                    <a href="/dashboard" class="btn btn-light">Tableau de bord</a>
+                    <a href="#" class="btn btn-light"><i class="fa fa-refresh"></i></a>
+                    <a href="#" class="btn btn-light"><i class="fa fa-search"></i></a>
+                    <a href="#" class="btn btn-light" id="topstats"><i class="fa fa-line-chart"></i></a>
+                </div>
+            </div>
+            <!-- End Page Header Right Div -->
+
+        </div>
+        <!-- End Page Header -->
+
+
+        <!-- //////////////////////////////////////////////////////////////////////////// -->
+        <!-- START CONTAINER -->
+        <div class="container-widget">
+
+            <!-- Start Top Stats -->
+            <!-- <div class="col-md-12">
+                <ul class="topstats clearfix">
+                    <li class="arrow"></li>
+                    <li class="col-xs-6 col-lg-2">
+                        <span class="title"><i class="fa fa-dot-circle-o"></i> Today Profit</span>
+                        <h3>$36.45</h3>
+                        <span class="diff"><b class="color-down"><i class="fa fa-caret-down"></i> 26%</b> from yesterday</span>
+                    </li>
+                    <li class="col-xs-6 col-lg-2">
+                        <span class="title"><i class="fa fa-calendar-o"></i> This Week</span>
+                        <h3>$96.25</h3>
+                        <span class="diff"><b class="color-up"><i class="fa fa-caret-up"></i> 26%</b> from last week</span>
+                    </li>
+                    <li class="col-xs-6 col-lg-2">
+                        <span class="title"><i class="fa fa-shopping-cart"></i> Total Sales</span>
+                        <h3 class="color-up">696</h3>
+                        <span class="diff"><b class="color-up"><i class="fa fa-caret-up"></i> 26%</b> from last month</span>
+                    </li>
+                    <li class="col-xs-6 col-lg-2">
+                        <span class="title"><i class="fa fa-users"></i> Visitors</span>
+                        <h3>960</h3>
+                        <span class="diff"><b class="color-down"><i class="fa fa-caret-down"></i> 26%</b> from yesterday</span>
+                    </li>
+                    <li class="col-xs-6 col-lg-2">
+                        <span class="title"><i class="fa fa-eye"></i> Page View</span>
+                        <h3 class="color-up">46.230</h3>
+                        <span class="diff"><b class="color-down"><i class="fa fa-caret-down"></i> 26%</b> from yesterday</span>
+                    </li>
+                    <li class="col-xs-6 col-lg-2">
+                        <span class="title"><i class="fa fa-clock-o"></i> Avarage Time</span>
+                        <h3 class="color-down">2:10<small>min</small></h3>
+                        <span class="diff"><b class="color-up"><i class="fa fa-caret-up"></i> 26%</b> from last week</span>
+                    </li>
+                </ul>
+            </div> -->
+            <!-- End Top Stats -->
+
+
+            <!-- Start First Row -->
+            <div class="row">
+
+                <div class="col-md-12">
+                    <div class="panel panel-default">
+                        <div class="panel-title">
+                            <!-- Ajouter un utilisateur -->
+                            <ul class="panel-tools">
+                                <li><a class="icon minimise-tool"><i class="fa fa-minus"></i></a></li>
+                                <li><a class="icon expand-tool"><i class="fa fa-expand"></i></a></li>
+                                <li><a class="icon closed-tool"><i class="fa fa-times"></i></a></li>
+                            </ul>
+                        </div>
+                        <div class="panel-body">
+                            @yield('content')
                         </div>
                     </div>
                 </div>
-                <div class="clearfix"></div> -->
+                <div class="col-md-2"></div>
 
-                <div class="col-lg-12">
-                    <section class="box ">
-                        @yield('content')
-                    </section>
+                <!-- Start Footer -->
+                <div class="row footer">
+                    <div class="col-md-6 text-left">
+                        Copyright © 20{{date('y')}} <a href="http://themeforest.net/user/bragher/portfolio" target="_blank">CSAP</a> Tous droits reservés.
+                    </div>
+                    <!-- <div class="col-md-6 text-right">
+                        CSAP <a href="http://themeforest.net/user/bragher/portfolio" target="_blank">Bragher</a>
+                    </div> -->
                 </div>
+                <!-- End Footer -->
+            </div>
+            <!-- END CONTAINER -->
+            <!-- <div role="tabpanel" class="sidepanel"> -->
 
-            </section>
-        </section>
-        <!-- END CONTENT -->
-         <div class="page-chatapi hideit">
+                <!-- Nav tabs -->
+                <!-- <ul class="nav nav-tabs" role="tablist">
+                    <li role="presentation" class="active"><a href="#today" aria-controls="today" role="tab" data-toggle="tab">TODAY</a></li>
+                    <li role="presentation"><a href="#tasks" aria-controls="tasks" role="tab" data-toggle="tab">TASKS</a></li>
+                    <li role="presentation"><a href="#chat" aria-controls="chat" role="tab" data-toggle="tab">CHAT</a></li>
+                </ul> -->
 
-                <div class="search-bar">
-                    <input type="text" placeholder="Search" class="form-control">
-                </div>
+                <!-- Tab panes -->
+                <!-- <div class="tab-content"> -->
 
-                <div class="chat-wrapper">
-                    <h4 class="group-head">Groups</h4>
-                    <ul class="group-list list-unstyled">
-                        <li class="group-row">
-                            <div class="group-status available">
-                                <i class="fa fa-circle"></i>
-                            </div>
-                            <div class="group-info">
-                                <h4><a href="#">Work</a></h4>
-                            </div>
-                        </li>
-                        <li class="group-row">
-                            <div class="group-status away">
-                                <i class="fa fa-circle"></i>
-                            </div>
-                            <div class="group-info">
-                                <h4><a href="#">Friends</a></h4>
-                            </div>
-                        </li>
+                    <!-- Start Today -->
+                    <!-- <div role="tabpanel" class="tab-pane active" id="today">
 
-                    </ul>
+                        <div class="sidepanel-m-title">
+                            Today
+                            <span class="left-icon"><a href="#"><i class="fa fa-refresh"></i></a></span>
+                            <span class="right-icon"><a href="#"><i class="fa fa-file-o"></i></a></span>
+                        </div>
 
+                        <div class="gn-title">NEW</div>
 
-                    <h4 class="group-head">Favourites</h4>
-                    <ul class="contact-list">
+                        <ul class="list-w-title">
+                            <li>
+                                <a href="#">
+                                    <span class="label label-danger">ORDER</span>
+                                    <span class="date">9 hours ago</span>
+                                    <h4>New Jacket 2.0</h4>
+                                    Etiam auctor porta augue sit amet facilisis. Sed libero nisi, scelerisque.
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#">
+                                    <span class="label label-success">COMMENT</span>
+                                    <span class="date">14 hours ago</span>
+                                    <h4>Bill Jackson</h4>
+                                    Etiam auctor porta augue sit amet facilisis. Sed libero nisi, scelerisque.
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#">
+                                    <span class="label label-info">MEETING</span>
+                                    <span class="date">at 2:30 PM</span>
+                                    <h4>Developer Team</h4>
+                                    Etiam auctor porta augue sit amet facilisis. Sed libero nisi, scelerisque.
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#">
+                                    <span class="label label-warning">EVENT</span>
+                                    <span class="date">3 days left</span>
+                                    <h4>Birthday Party</h4>
+                                    Etiam auctor porta augue sit amet facilisis. Sed libero nisi, scelerisque.
+                                </a>
+                            </li>
+                        </ul>
 
-                        <li class="user-row" id='chat_user_1' data-user-id='1'>
-                            <div class="user-img">
-                                <a href="#"><img src="data/profile/avatar-1.png" alt=""></a>
-                            </div>
-                            <div class="user-info">
-                                <h4><a href="#">Clarine Vassar</a></h4>
-                                <span class="status available" data-status="available"> Available</span>
-                            </div>
-                            <div class="user-status available">
-                                <i class="fa fa-circle"></i>
-                            </div>
-                        </li>
-                        <li class="user-row" id='chat_user_2' data-user-id='2'>
-                            <div class="user-img">
-                                <a href="#"><img src="data/profile/avatar-2.png" alt=""></a>
-                            </div>
-                            <div class="user-info">
-                                <h4><a href="#">Brooks Latshaw</a></h4>
-                                <span class="status away" data-status="away"> Away</span>
-                            </div>
-                            <div class="user-status away">
-                                <i class="fa fa-circle"></i>
-                            </div>
-                        </li>
-                        <li class="user-row" id='chat_user_3' data-user-id='3'>
-                            <div class="user-img">
-                                <a href="#"><img src="data/profile/avatar-3.png" alt=""></a>
-                            </div>
-                            <div class="user-info">
-                                <h4><a href="#">Clementina Brodeur</a></h4>
-                                <span class="status busy" data-status="busy"> Busy</span>
-                            </div>
-                            <div class="user-status busy">
-                                <i class="fa fa-circle"></i>
-                            </div>
-                        </li>
+                    </div> -->
+                    <!-- End Today -->
 
-                    </ul>
+                    <!-- Start Tasks -->
+                    <!-- <div role="tabpanel" class="tab-pane" id="tasks">
 
+                        <div class="sidepanel-m-title">
+                            To-do List
+                            <span class="left-icon"><a href="#"><i class="fa fa-pencil"></i></a></span>
+                            <span class="right-icon"><a href="#"><i class="fa fa-trash"></i></a></span>
+                        </div>
 
-                    <h4 class="group-head">More Contacts</h4>
-                    <ul class="contact-list">
+                        <div class="gn-title">TODAY</div>
 
-                        <li class="user-row" id='chat_user_4' data-user-id='4'>
-                            <div class="user-img">
-                                <a href="#"><img src="data/profile/avatar-4.png" alt=""></a>
-                            </div>
-                            <div class="user-info">
-                                <h4><a href="#">Carri Busey</a></h4>
-                                <span class="status offline" data-status="offline"> Offline</span>
-                            </div>
-                            <div class="user-status offline">
-                                <i class="fa fa-circle"></i>
-                            </div>
-                        </li>
-                        <li class="user-row" id='chat_user_5' data-user-id='5'>
-                            <div class="user-img">
-                                <a href="#"><img src="data/profile/avatar-5.png" alt=""></a>
-                            </div>
-                            <div class="user-info">
-                                <h4><a href="#">Melissa Dock</a></h4>
-                                <span class="status offline" data-status="offline"> Offline</span>
-                            </div>
-                            <div class="user-status offline">
-                                <i class="fa fa-circle"></i>
-                            </div>
-                        </li>
-                        <li class="user-row" id='chat_user_6' data-user-id='6'>
-                            <div class="user-img">
-                                <a href="#"><img src="data/profile/avatar-1.png" alt=""></a>
-                            </div>
-                            <div class="user-info">
-                                <h4><a href="#">Verdell Rea</a></h4>
-                                <span class="status available" data-status="available"> Available</span>
-                            </div>
-                            <div class="user-status available">
-                                <i class="fa fa-circle"></i>
-                            </div>
-                        </li>
-                        <li class="user-row" id='chat_user_7' data-user-id='7'>
-                            <div class="user-img">
-                                <a href="#"><img src="data/profile/avatar-2.png" alt=""></a>
-                            </div>
-                            <div class="user-info">
-                                <h4><a href="#">Linette Lheureux</a></h4>
-                                <span class="status busy" data-status="busy"> Busy</span>
-                            </div>
-                            <div class="user-status busy">
-                                <i class="fa fa-circle"></i>
-                            </div>
-                        </li>
-                        <li class="user-row" id='chat_user_8' data-user-id='8'>
-                            <div class="user-img">
-                                <a href="#"><img src="data/profile/avatar-3.png" alt=""></a>
-                            </div>
-                            <div class="user-info">
-                                <h4><a href="#">Araceli Boatright</a></h4>
-                                <span class="status away" data-status="away"> Away</span>
-                            </div>
-                            <div class="user-status away">
-                                <i class="fa fa-circle"></i>
-                            </div>
-                        </li>
-                        <li class="user-row" id='chat_user_9' data-user-id='9'>
-                            <div class="user-img">
-                                <a href="#"><img src="data/profile/avatar-4.png" alt=""></a>
-                            </div>
-                            <div class="user-info">
-                                <h4><a href="#">Clay Peskin</a></h4>
-                                <span class="status busy" data-status="busy"> Busy</span>
-                            </div>
-                            <div class="user-status busy">
-                                <i class="fa fa-circle"></i>
-                            </div>
-                        </li>
-                        <li class="user-row" id='chat_user_10' data-user-id='10'>
-                            <div class="user-img">
-                                <a href="#"><img src="data/profile/avatar-5.png" alt=""></a>
-                            </div>
-                            <div class="user-info">
-                                <h4><a href="#">Loni Tindall</a></h4>
-                                <span class="status away" data-status="away"> Away</span>
-                            </div>
-                            <div class="user-status away">
-                                <i class="fa fa-circle"></i>
-                            </div>
-                        </li>
-                        <li class="user-row" id='chat_user_11' data-user-id='11'>
-                            <div class="user-img">
-                                <a href="#"><img src="data/profile/avatar-1.png" alt=""></a>
-                            </div>
-                            <div class="user-info">
-                                <h4><a href="#">Tanisha Kimbro</a></h4>
-                                <span class="status idle" data-status="idle"> Idle</span>
-                            </div>
-                            <div class="user-status idle">
-                                <i class="fa fa-circle"></i>
-                            </div>
-                        </li>
-                        <li class="user-row" id='chat_user_12' data-user-id='12'>
-                            <div class="user-img">
-                                <a href="#"><img src="data/profile/avatar-2.png" alt=""></a>
-                            </div>
-                            <div class="user-info">
-                                <h4><a href="#">Jovita Tisdale</a></h4>
-                                <span class="status idle" data-status="idle"> Idle</span>
-                            </div>
-                            <div class="user-status idle">
-                                <i class="fa fa-circle"></i>
-                            </div>
-                        </li>
+                        <ul class="todo-list">
+                            <li class="checkbox checkbox-primary">
+                                <input id="checkboxside1" type="checkbox"><label for="checkboxside1">Add new products</label>
+                            </li>
 
-                    </ul>
-                </div>
+                            <li class="checkbox checkbox-primary">
+                                <input id="checkboxside2" type="checkbox"><label for="checkboxside2"><b>May 12, 6:30 pm</b> Meeting with Team</label>
+                            </li>
+
+                            <li class="checkbox checkbox-warning">
+                                <input id="checkboxside3" type="checkbox"><label for="checkboxside3">Design Facebook page</label>
+                            </li>
+
+                            <li class="checkbox checkbox-info">
+                                <input id="checkboxside4" type="checkbox"><label for="checkboxside4">Send Invoice to customers</label>
+                            </li>
+
+                            <li class="checkbox checkbox-danger">
+                                <input id="checkboxside5" type="checkbox"><label for="checkboxside5">Meeting with developer team</label>
+                            </li>
+                        </ul>
+
+                        <div class="gn-title">TOMORROW</div>
+                        <ul class="todo-list">
+                            <li class="checkbox checkbox-warning">
+                                <input id="checkboxside6" type="checkbox"><label for="checkboxside6">Redesign our company blog</label>
+                            </li>
+
+                            <li class="checkbox checkbox-success">
+                                <input id="checkboxside7" type="checkbox"><label for="checkboxside7">Finish client work</label>
+                            </li>
+
+                            <li class="checkbox checkbox-info">
+                                <input id="checkboxside8" type="checkbox"><label for="checkboxside8">Call Johnny from Developer Team</label>
+                            </li>
+
+                        </ul>
+                    </div> -->
+                    <!-- End Tasks -->
+
+                    <!-- Start Chat -->
+                    <!-- <div role="tabpanel" class="tab-pane" id="chat">
+
+                        <div class="sidepanel-m-title">
+                            Friend List
+                            <span class="left-icon"><a href="#"><i class="fa fa-pencil"></i></a></span>
+                            <span class="right-icon"><a href="#"><i class="fa fa-trash"></i></a></span>
+                        </div>
+
+                        <div class="gn-title">ONLINE MEMBERS (3)</div>
+                        <ul class="group">
+                            <li class="member"><a href="#"><img src="{{asset('assets/img/profileimg.png')}}" alt="img"><b>Allice Mingham</b>Los Angeles</a><span class="status online"></span></li>
+                            <li class="member"><a href="#"><img src="{{asset('assets/img/profileimg2.png')}}" alt="img"><b>James Throwing</b>Las Vegas</a><span class="status busy"></span></li>
+                            <li class="member"><a href="#"><img src="{{asset('assets/img/profileimg3.png')}}" alt="img"><b>Fred Stonefield</b>New York</a><span class="status away"></span></li>
+                            <li class="member"><a href="#"><img src="{{asset('assets/img/profileimg4.png')}}" alt="img"><b>Chris M. Johnson</b>California</a><span class="status online"></span></li>
+                        </ul>
+
+                        <div class="gn-title">OFFLINE MEMBERS (8)</div>
+                        <ul class="group">
+                            <li class="member"><a href="#"><img src="{{asset('assets/img/profileimg5.png')}}" alt="img"><b>Allice Mingham</b>Los Angeles</a><span class="status offline"></span></li>
+                            <li class="member"><a href="#"><img src="{{asset('assets/img/profileimg6.png')}}" alt="img"><b>James Throwing</b>Las Vegas</a><span class="status offline"></span></li>
+                        </ul>
+
+                        <form class="search">
+                            <input type="text" class="form-control" placeholder="Search a Friend...">
+                        </form>
+                    </div> -->
+                    <!-- End Chat -->
+
+                <!-- </div> -->
 
             </div>
-
-
-            <div class="chatapi-windows ">
-
-
-            </div>    </div>
-    </div>
-    <!-- END CONTAINER -->
-    @include('layout.footer')
+            @include('layout.footer')
 </body>
 
 </html>

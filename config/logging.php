@@ -126,6 +126,30 @@ return [
         'emergency' => [
             'path' => storage_path('logs/laravel.log'),
         ],
+        'gestion_stock_log' => [
+            'driver' => 'single',
+            'channels' => ['daily'],
+            'path' => storage_path('logs/'. date('Y-m-d') .'/gestion_stock.log'),
+            'level' => 'info',
+        ],
+        'gestion_users_log' => [
+            'driver' => 'single',
+            'channels' => ['daily'],
+            'path' => storage_path('logs/'. date('Y-m-d') .'/gestion_users.log'),
+            'level' => 'info',
+        ],
+        'gestion_facturation_log' => [
+            'driver' => 'single',
+            'channels' => ['daily'],
+            'path' => storage_path('logs/'. date('Y-m-d') .'/gestion_facturation.log'),
+            'level' => 'info',
+        ],
+        'gestion_ticket_log' => [
+            'driver' => 'single',
+            'channels' => ['daily'],
+            'path' => storage_path('logs/'. date('Y-m-d') .'/gestion_ticket.log'),
+            'level' => 'info',
+        ],
     ],
 
 ];
