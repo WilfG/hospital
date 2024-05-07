@@ -21,7 +21,7 @@
             @endif
 
             <a href="{{route('permissions.create')}}" class="btn btn-primary" title="Enregistrer une permission"><i class="fa fa-plus-circle"></i> Enregistrer une permission</a>
-            <table id="example-11" class="display table table-hover table-condensed" cellspacing="0" width="100%">
+            <table id="example-11" class="datatb display table table-hover table-condensed" cellspacing="0" width="100%">
                 <thead>
                     <tr>
                         <th>#</th>

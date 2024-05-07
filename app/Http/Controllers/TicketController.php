@@ -6,6 +6,7 @@ use App\Models\Ticket;
 use App\Models\TicketMessage;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 
 class TicketController extends Controller
@@ -94,5 +95,33 @@ class TicketController extends Controller
     public function destroy(Ticket $ticket)
     {
         //
+    }
+
+
+    public function search(Request $request)
+    {
+        try {
+            // die($request);
+            if ($request->ajax()) {
+            }
+            $output = "";
+            $tickets = DB::table('tickets')->where('title', 'LIKE', '%' . $request->searchticket . "%")->get();
+            if ($tickets) {
+                foreach ($tickets as $key => $ticket) {
+                    // $url = asset($ticket->image);
+                    $output .= '<tr>
+                    <td>
+                        <a href="/gestion_tickets/tickets/'. $ticket->id.'>'. 
+                            $ticket->title
+                       .' </a>
+                    </td>
+                </tr>';
+                }
+            }
+            return Response($output);
+        } catch (\Throwable $th) {
+            return response()->json(['error' => $th->getMessage()]);
+        }
+        // return  json_encode($pharmacies, JSON_PRETTY_PRINT);
     }
 }

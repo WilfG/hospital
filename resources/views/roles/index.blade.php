@@ -21,7 +21,7 @@
             @endif
             <a href="{{route('roles.create')}}" class="btn btn-primary" title="Enregistrer un nouveau rôle"><i class="fa fa-plus-circle"></i> Enregistrer un nouveau rôle</a>
 
-            <table id="example-11" class="display table table-hover table-condensed" cellspacing="0" width="100%">
+            <table id="example-11" class="datatb display table table-hover table-condensed" cellspacing="0" width="100%">
                 <thead>
                     <tr>
                         <th>#</th>

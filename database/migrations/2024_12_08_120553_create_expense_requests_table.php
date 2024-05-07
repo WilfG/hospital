@@ -18,7 +18,7 @@ return new class extends Migration
             $table->string('note')->nullable();
             $table->date('expense_date');
             $table->index("user_id");
-            $table->enum('status', ['pending', 'completed'])->nullable()->default('pending');
+            $table->enum('status', ['pending', 'completed', 'very_completed'])->nullable()->default('pending');
             $table->string('justificatif_req')->nullable();
             $table->string('code')->nullable();
             $table->foreignId('user_id')

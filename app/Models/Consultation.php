@@ -19,8 +19,13 @@ class Consultation extends Model
         return $this->belongsTo(Patient::class);
     }
 
-    public function examens(): HasMany
+    // public function examens(): HasMany
+    // {
+    //     return $this->hasMany(Examen::class);
+    // }
+    public function payments(): HasMany
     {
-        return $this->hasMany(Examen::class);
+        return $this->hasMany(Payment::class);
     }
+
 }

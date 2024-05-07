@@ -39,18 +39,18 @@
 
                 <tbody>
                     @foreach($expensesReq as $req)
-                    @if($req->status == 'pending')
-                    @php $etat = 'En cours de validation'; $color = 'warning'; @endphp
-                    @elseif($req->status == 'completed')
-                    @php $etat = 'Requête validée'; $color = 'success'; @endphp
-                    @endif
+                        @if($req->status == 'pending')
+                            @php $etat = 'En cours de validation'; $color = 'warning'; @endphp
+                                @elseif($req->status == 'completed' || $req->status == 'very_completed')
+                            @php $etat = 'Requête validée'; $color = 'success'; @endphp
+                        @endif
                     <tr>
                         <td>{{$req->user->lastname . ' '. $req->user->firstname}}</td>
                         <td>{{$req->code}}</td>
                         <td>{{$req->reason}}</td>
                         <td>{{$req->amount}}</td>
                         <td>{{$req->expense_date}}</td>
-                        <td>{{$req->note}}</td>
+                        <td>{!!$req->note!!}</td>
                         <td>{{$etat}}</td>
                         <td style="display:flex;">
                             @if($canValidate)
@@ -63,24 +63,24 @@
                             </form>
                             @endif
 
-                            @if($req->status != 'completed')
+                            @if($req->status == 'pending')
                             <a href="{{route('expenses_requests.edit', $req->id)}}" class="btn btn-warning btn-sm" style="margin: 2px;" title="Modifier"><i class="fa fa-pencil" ></i></a>
                             <form action="{{route('expenses_requests.destroy', $req->id)}}" method="POST">
                                 @csrf
                                 @METHOD('DELETE')
                                 <button type="submit" class="btn btn-danger btn-sm" title="Supprimer"><i class="fa fa-trash"></i></button>
                             </form>
-                            @else
+                            @elseif($req->status == 'completed' )
                             <a role="link" aria-disabled="true" disabled class="btn btn-warning btn-sm" style="margin: 2px;" title="Modifier"><i class="fa fa-pencil" ></i></a>
                             <form action="{{route('expenses_requests.destroy', $req->id)}}" method="POST">
                                 @csrf
                                 @METHOD('DELETE')
                                 <button type="submit" disabled="disabled" class="btn btn-danger btn-sm" title="Supprimer"><i class="fa fa-trash"></i></button>
                             </form>
-                            @endif
-
-                            @if($req->status == 'completed')
                              <a href="{{route('expense_create', $req->id)}}" class="btn btn-primary btn-sm" style="margin: 2px;" title="Enregistrer la dépense"><i class="fa fa-plus" ></i></a>
+                            @endif
+                            @if($req->status == 'very_completed')
+                             <a href="{{route('expense_create', $req->id)}}" disabled class="btn btn-primary btn-sm" style="margin: 2px;" title="Enregistrer la dépense"><i class="fa fa-plus" ></i></a>
                             @endif
                             <a class="btn btn-default  btn-sm downloadBtn" data-line-id="{{ $req->id }}" title="Télécharger le fichier joint"><i class="fa fa-download"></i>  </a>
                            

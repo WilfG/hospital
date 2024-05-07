@@ -56,4 +56,14 @@
             </ul>
         </li>
         @endif
+        @if (Request::is('gestion_patients/*'))
+        <li>
+            <a href="#"><span class="icon color7"><i class="fa fa-money"></i></span>Patients<span class="caret"></span></a>
+            <ul>
+                <li><a href="{{route('patients.index')}}">Liste des patients</a></li>
+                <li><a href="{{route('consultations.index')}}">Liste des consultations</a></li>
+                <li><a href="{{route('appointments.index')}}">Calendrier des Rendez-vous</a></li>
+            </ul>
+        </li>
+        @endif
 </div>

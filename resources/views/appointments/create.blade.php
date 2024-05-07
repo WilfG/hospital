@@ -7,7 +7,7 @@
     <div class="page-title">
 
         <div class="float-left">
-            <h1 class="title">Enregistrement d'un médicament</h1>
+            <h1 class="title">Enregistrement d'une Rendez-vous</h1>
         </div>
 
         <div class="float-right d-none">
@@ -16,10 +16,10 @@
                     <a href="index.html"><i class="fa fa-home"></i>Accueil</a>
                 </li>
                 <li>
-                    <a href="hos-patients.html">Médicaments</a>
+                    <a href="hos-patients.html">Rendez-vous</a>
                 </li>
                 <li class="active">
-                    <strong>Enregistrement d'un médicament</strong>
+                    <strong>Enregistrement d'un Rendez-vous </strong>
                 </li>
             </ol>
         </div>
@@ -49,22 +49,32 @@
                     {{ session('status') }}
                 </div>
                 @endif
-                <form action="{{route('drugs.store')}}" method="post" enctype="multipart/form-data">
+                <form action="{{route('appointments.store')}}" method="post" enctype="multipart/form-data">
                     @csrf
                     @METHOD('POST')
- 
+
                     <div class="col-xl-8 col-lg-8 col-md-9 col-12">
                         <div class="form-group">
-                            <label class="form-label" for="label_categorie">Libellé du médicament</label>
-                            <input type="text" name="name" class="form-control" value="{{old('name')}}">
-                        </div>
-                        <div class="form-group">
-                            <label class="form-label" for="label_categorie">Description</label>
-                            <textarea name="description" class="form-control" value="{{old('description')}}"></textarea>
+                            <label for="patient" class="form-label">Patient</label>
+                            <select class="form-control" id="patient" name="patient">
+                                <option value="">Choisir le patient...</option>
+                                @foreach ($patients as $patient)
+                                <option value="{{$patient->id}}">{{$patient->firstname}} {{$patient->lastname}}</option>
+                                @endforeach
+                            </select>
+
                         </div>
                         
-                    </div>
+                        <div class="form-group">
+                            <label class="form-label" for="appointment_time">Date du Rendez-vous</label>
+                            <input type="datetime-local" name="appointment_time" class="form-control" value="{{old('appointment_time')}}">
+                        </div>
 
+                        <div class="form-group">
+                            <label class="form-label" for="notes">Notes</label>
+                            <textarea name="notes" class="form-control">{{old('notes')}}</textarea>
+                        </div>
+                    </div>
                     <div class="col-xl-8 col-lg-8 col-md-9 col-12 padding-bottom-30">
                         <div class="text-left">
                             <button type="submit" class="btn btn-primary">Enregistrer</button>

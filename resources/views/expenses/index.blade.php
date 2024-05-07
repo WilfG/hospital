@@ -41,7 +41,7 @@
                         <td>{{$expense->amount}}</td>
                         <td>{{$expense->reason}}</td>
                         <td>{{$expense->label}}</td>
-                        <td>{{$expense->note}}</td>
+                        <td>{!!$expense->note!!}</td>
                         <td style="display:flex;">
                             <a href="{{route('expenses.edit', $expense->id)}}" class="btn btn-warning btn-sm" style="margin: 2px;"><i class="fa fa-pencil" title="Modifier"></i></a>
                             <form action="{{route('expenses.destroy', $expense->id)}}" method="POST">

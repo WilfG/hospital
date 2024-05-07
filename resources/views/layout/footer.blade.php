@@ -17,7 +17,6 @@ Plugin.js - Some Specific JS codes for Plugin Settings
  <!-- ================================================
 Bootstrap Select
 ================================================ -->
- <script src="{{asset('assets/js/bootstrap-select/bootstrap-select.js')}}"></script>
 
  <!-- ================================================
 Bootstrap Toggle
@@ -79,20 +78,23 @@ Rickshaw
  <!-- demo codes -->
  <script src="{{asset('assets/js/rickshaw/rickshaw-plugin.js')}}"></script>
  <!-- ================================================
-Data Tables
-================================================ -->
- <script src="{{asset('assets/js/datatables/datatables.min.js')}}"></script>
-
- <!-- ================================================
-Sweet Alert
-================================================ -->
+ 
+  ================================================
+ Sweet Alert
+ ================================================ -->
  <script src="{{asset('assets/js/sweet-alert/sweet-alert.min.js')}}"></script>
 
  <!-- ================================================
-Kode Alert
-================================================ -->
+ Kode Alert
+ ================================================ -->
  <script src="{{asset('assets/js/kode-alert/main.js')}}"></script>
 
+ @endif
+ <!-- Data Tables 
+ ================================================ -->
+ <script src="{{asset('assets/js/bootstrap-select/bootstrap-select.js')}}"></script>
+
+ <script src="{{asset('assets/js/datatables/datatables.min.js')}}"></script>
  <!-- ================================================
 jQuery UI
 ================================================ -->
@@ -107,12 +109,11 @@ Moment.js
 Full Calendar
 ================================================ -->
  <script src="{{asset('assets/js/full-calendar/fullcalendar.js')}}"></script>
-
+ <script src="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/2.2.7/lang-all.js"></script>
  <!-- ================================================
 Bootstrap Date Range Picker
 ================================================ -->
  <script src="{{asset('assets/js/date-range-picker/daterangepicker.js')}}"></script>
- @endif
 
  <!-- ================================================
 Below codes are only for index widgets
@@ -127,15 +128,32 @@ Below codes are only for index widgets
      selector: 'textarea',
      plugins: 'anchor autolink charmap codesample emoticons image link lists media searchreplace table visualblocks wordcount linkchecker',
      toolbar: 'undo redo | blocks fontfamily fontsize | bold italic underline strikethrough | link image media table | align lineheight | numlist bullist indent outdent | emoticons charmap | removeformat',
-     content_langs: [
-      { title: 'English', code: 'en' },
-      { title: 'Spanish', code: 'es' },
-      { title: 'French', code: 'fr' },
-      { title: 'German', code: 'de' },
-      { title: 'Portuguese', code: 'pt' },
-      { title: 'Chinese', code: 'zh' }
-    ]
-    });
+     content_langs: [{
+         title: 'English',
+         code: 'en'
+       },
+       {
+         title: 'Spanish',
+         code: 'es'
+       },
+       {
+         title: 'French',
+         code: 'fr'
+       },
+       {
+         title: 'German',
+         code: 'de'
+       },
+       {
+         title: 'Portuguese',
+         code: 'pt'
+       },
+       {
+         title: 'Chinese',
+         code: 'zh'
+       }
+     ]
+   });
  </script>
 
  <script type="text/javascript">
@@ -166,28 +184,184 @@ Below codes are only for index widgets
        $.ajax({
          type: 'GET',
          url: "/facturation_gestion_financiere/demande_de_depense/download/" + itemId, // Laravel route
-         // data: {
-         //    id:itemId
-         // },
+
          success: function(response) {
-           // Handle the response\
-           alert(response)
-           var blob = new Blob([response]); // Adjust type according to your file type
-           var url = window.URL.createObjectURL(blob);
+           //  alert(response)
            var a = document.createElement('a');
-           a.href = url;
-           a.download = response; // Adjust filename as needed
-           document.body.appendChild(a);
+           a.href = response;
+           a.download = response;
            a.click();
-           window.URL.revokeObjectURL(url);
 
          },
          error: function(xhr, status, error) {
-           // Handle errors
            console.error(xhr.responseText);
          }
        });
      })
+
+     $('#searchticket').on('keyup', function() {
+       $value = $(this).val();
+       $.ajax({
+         type: 'get',
+         url: "{{URL::to('/gestion_ticket/searchticket')}}",
+         data: {
+           'searchticket': $value
+         },
+         success: function(data) {
+           // console.log(data)
+           $('#tickets_results').html(data);
+         },
+         error: function(data) {
+           $('#tickets_results').html('<h3>Pas de tickets trouvés</h3>');
+
+         }
+       });
+     })
+
+
+     /* initialize the external events
+     -----------------------------------------------------------------*/
+     $('#external-events .fc-event').each(function() {
+
+       // store data so the calendar knows to render an event upon drop
+       $(this).data('event', {
+         title: $.trim($(this).text()), // use the element's text as the event title
+         stick: true // maintain when user navigates (see docs on the renderEvent method)
+       });
+
+       // make the event draggable using jQuery UI
+       $(this).draggable({
+         zIndex: 999,
+         revert: true, // will cause the event to go back to its
+         revertDuration: 0 //  original position after the drag
+       });
+
+     });
+
+
+     /* initialize the calendar
+     -----------------------------------------------------------------*/
+     $('#calendar').fullCalendar({
+       header: {
+         left: 'prev,next today',
+         center: 'title',
+         right: 'month,basicWeek,basicDay',
+         //  buttonText: {
+         //    today: 'Aujourd\'ui',
+         //    day: 'Jour',
+         //    week: 'Semaine',
+         //    month: 'Mois'
+         //  }
+       },
+       defaultDate: new Date(),
+       editable: true,
+       droppable: true, // this allows things to be dropped onto the calendar
+       eventLimit: true, // allow "more" link when too many events
+       lang: 'fr',
+       events: {
+         url: "{{url('api/appointments')}}",
+         type: "GET"
+       },
+       //  eventRender: function(info) {
+       //    var firstname = info.event.extendedProps.firstname;
+       //    var lastname = info.event.extendedProps.lastname;
+
+       //    info.el.querySelector('.fc-title').innerHTML += ' (' + firstname + " " + lastname + ')';
+       //  },
+
+       eventClick: function(info) {
+         alert('Description: Vous avez Rendez-vous avec ' + info.event.firstname + " " + info.event.lastname);
+         // You can customize how you want to display the additional data here
+       }
+     });
+     $('.datatb').DataTable({
+       "language": {
+         "sUrl": "custom_fr.txt"
+       }
+     });
+
+     //Categorie de depense
+     function categoryList() {
+       $.ajax({
+         method: "GET",
+         url: "{{URL::to('/api/categoryExpList')}}",
+         success: function(rsp) {
+           console.log(rsp)
+           $('#categorie').html(rsp);
+           //  $('#myModal').close();
+         },
+         error: function(err) {
+           console.log(err)
+         }
+       })
+     };
+     categoryList();
+     $('#formCategExpPlus').submit(function(e) {
+       e.preventDefault();
+       var label_categorie = $('#label_categorie').val();
+       $.ajax({
+         method: "POST",
+         url: "{{URL::to('/api/categoryExp')}}",
+         data: {
+           label_categorie: label_categorie
+           //  _token: '{{csrf_token()}}'
+
+         },
+         success: function(rsp) {
+           window.location.reload();
+           //  $('#categorie').html(rsp);
+           //  $('#myModal').close();
+         },
+         error: function(err) {
+           console.log(err)
+         }
+       })
+     });
+
+
+   });
+
+   $('#country-dd').on('change', function() {
+     var idCountry = this.value;
+     $("#state-dd").html('');
+     $.ajax({
+       url: "{{url('api/fetch-states')}}",
+       type: "POST",
+       data: {
+         country_id: idCountry,
+         _token: '{{csrf_token()}}'
+       },
+       dataType: 'json',
+       success: function(result) {
+         $('#state-dd').html('<option value="">Select State</option>');
+         $.each(result.states, function(key, value) {
+           $("#state-dd").append('<option value="' + value
+             .id + '">' + value.name + '</option>');
+         });
+         $('#city-dd').html('<option value="">Select City</option>');
+       }
+     });
+   });
+   $('#state-dd').on('change', function() {
+     var idState = this.value;
+     $("#city-dd").html('');
+     $.ajax({
+       url: "{{url('api/fetch-cities')}}",
+       type: "POST",
+       data: {
+         state_id: idState,
+         _token: '{{csrf_token()}}'
+       },
+       dataType: 'json',
+       success: function(res) {
+         $('#city-dd').html('<option value="">Select City</option>');
+         $.each(res.cities, function(key, value) {
+           $("#city-dd").append('<option value="' + value
+             .id + '">' + value.name + '</option>');
+         });
+       }
+     });
+
    });
  </script>
  @if(Request::is('dashboard/*'))
@@ -277,6 +451,14 @@ Below codes are only for index widgets
        var swatch = '<span class="detail_swatch" style="background-color: ' + series.color + '"></span>';
        var content = swatch + series.name + ": " + parseInt(y) + '<br>' + date;
        return content;
+     }
+   });
+ </script>
+
+ <script type="text/javascript">
+   $.ajaxSetup({
+     headers: {
+       'csrftoken': '{{ csrf_token() }}'
      }
    });
  </script>

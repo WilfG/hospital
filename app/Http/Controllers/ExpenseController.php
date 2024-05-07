@@ -81,24 +81,18 @@ class ExpenseController extends Controller
                 return redirect()->back()->with('errors', $validator->errors());
             }
 
-            if ($request->hasFile('justificatif')) {
-                $path = $request->file('justificatif')->store('depenses', 'public');
-                $expense = Expense::create([
-                    'justificatif' => $path,
-                    'request_id' => $request->reqExpense,
-                    'expenses_category_id' => $request->label_categorie,
+            $path = $request->hasFile('justificatif') ? $request->file('justificatif')->store('depenses', 'public') : null;
+            $expense = Expense::create([
+                'justificatif' => $path,
+                'request_id' => $request->reqExpense,
+                'expenses_category_id' => $request->label_categorie,
 
-                ]);
-            } else {
-                # code...
-                $expense = Expense::create([
-                    'request_id' => $request->reqExpense,
-                    'expenses_category_id' => $request->label_categorie,
-
-                ]);
-            }
-
+            ]);
+            
             if ($expense) {
+                $reqExpense = ExpenseRequest::findOrFail($request->reqExpense)->update([
+                    'status' => 'very_completed'
+                ]);
                 Log::channel('gestion_facturation_log')->info(auth()->user()->lastname . ' ' . auth()->user()->firstname . ' a effectué une dépense');
                 return redirect()->route('expenses.index');
             }

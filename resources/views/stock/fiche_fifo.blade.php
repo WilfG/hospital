@@ -24,7 +24,7 @@
         <tr>
 
             <td colspan="4">
-                <table class="display table table-hover table-condensed" width="100%">
+                <table class="datatb display table table-hover table-condensed" width="100%">
 
 
                     @foreach($purchases as $purchase)

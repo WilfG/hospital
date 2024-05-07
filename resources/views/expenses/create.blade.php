@@ -66,17 +66,15 @@
                         </div>
                         <div class="form-group">
                             <label class="form-label" for="label_categorie">Description</label>
-                            <input type="text" class="form-control" readonly value="{{$reqExpense->note}}">
+                            <input type="text" class="form-control" readonly value="{!!$reqExpense->note!!}">
                         </div>
                         <div class="form-group">
-                            <label class="form-label" for="label_categorie">Catégories</label>
-                            <span class="desc"></span>
-                            <select name="label_categorie" class="form-control" id="label_categorie" required>
-                                <option value=""></option>
-                                @foreach($categories as $categorie)
-                                <option value="{{$categorie->id}}">{{$categorie->label}}</option>
-                                @endforeach
-                            </select>
+                            <label class="col-sm-4 control-label form-label" for="label_categorie">Catégories</label>
+                            <div class="col-sm-8" id="categorie" >
+
+                               
+                                
+                            </div>
                         </div>
 
 
@@ -104,4 +102,39 @@
     </section>
 </div>
 <!-- END CONTENT -->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-hidden="true" style="display: none;">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+                <h4 class="modal-title">Enregistrer une nouvelle catégorie de dépense</h4>
+            </div>
+            <div class="modal-body">
+                <form action="{{route('categ_expenses.store')}}" method="post" id="formCategExpPlus">
+                    @csrf
+                    @METHOD('POST')
+                    <div class="col-xl-8 col-lg-8 col-md-9 col-12">
+                        <div class="form-group">
+                            <label class="form-label" for="label_categorie">Libellé de la catégorie</label>
+                            <span class="desc"></span>
+                            <div class="controls">
+                                <input type="text" name="label_categorie" value="{{old('label_categorie')}}" class="form-control" id="label_categorie" required>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-xl-8 col-lg-8 col-md-9 col-12 padding-bottom-30">
+                        <div class="text-left">
+                            <button type="submit" class="btn btn-primary">Enregistrer</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <!-- <button type="button" class="btn btn-white" data-dismiss="modal">Close</button> -->
+                <!-- <button type="button" class="btn btn-default">Save changes</button> -->
+            </div>
+        </div>
+    </div>
+</div>
 @endsection

@@ -311,17 +311,17 @@ class ExpenseRequestController extends Controller
     {
         // File to be downloaded
         $file = ExpenseRequest::find($id)->justificatif_req;
-        echo env('APP_URL') . ':8000/' . 'public/storage/' . $file;
+        echo '/storage/' . $file;
         exit;
-        if (Storage::disk('public')->exists($file)) {
-            echo $file;
-            exit;
-            // The file exists
-            $fileName = basename($file);
-            $headers = ['Content-Type: application/pdf'];
+        // if (Storage::disk('public')->exists($file)) {
+        //     // echo $file;
+        //     // exit;
+        //     // The file exists
+        //     $fileName = basename($file);
+        //     $headers = ['Content-Type: application/pdf'];
 
-            return Storage::download($file, null, $headers);
-        }
-        return redirect()->back()->with('errors', "Le fichier n'existe pas");
+        //     return Storage::download($file, null, $headers);
+        // }
+        // return redirect()->back()->with('errors', "Le fichier n'existe pas");
     }
 }

@@ -1,10 +1,13 @@
 <?php
 
+use App\Http\Controllers\AppointmentController;
 use App\Http\Controllers\CategoryExpensesController;
+use App\Http\Controllers\ConsultationController;
 use App\Http\Controllers\DrugController;
 use App\Http\Controllers\ExpenseController;
 use App\Http\Controllers\ExpenseRequestController;
 use App\Http\Controllers\MaterialController;
+use App\Http\Controllers\PatientsController;
 use App\Http\Controllers\PermissionController;
 use App\Http\Controllers\PurchaseController;
 use App\Http\Controllers\RoleController;
@@ -73,7 +76,14 @@ Route::middleware('auth')->group(function () {
     });
 
     Route::prefix('gestion_ticket')->group(function () {
+        Route::get('/searchticket', [TicketController::class, 'search']);
+        
         Route::resource('/tickets', TicketController::class);
         Route::post('/tickets/{ticket}/messages', [TicketController::class, 'addMessage'])->name('tickets.add_message');
+    });
+    Route::prefix('gestion_patients')->group(function () {
+        Route::resource('patients', PatientsController::class);
+        Route::resource('consultations', ConsultationController::class);
+        Route::resource('appointments', AppointmentController::class);
     });
 });

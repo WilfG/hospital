@@ -27,7 +27,7 @@
             </div>
             <!-- /.card-header -->
             <div class="card-body table-responsive p-0">
-                <table class="table table-bordered table-hover tag_dataTable">
+                <table class="datatb table table-bordered table-hover tag_dataTable">
                     <thead>
                         <tr>
                             <th>#</th>

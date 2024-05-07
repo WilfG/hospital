@@ -150,6 +150,12 @@ return [
             'path' => storage_path('logs/'. date('Y-m-d') .'/gestion_ticket.log'),
             'level' => 'info',
         ],
+        'gestion_patients' => [
+            'driver' => 'single',
+            'channels' => ['daily'],
+            'path' => storage_path('logs/'. date('Y-m-d') .'/gestion_patiens.log'),
+            'level' => 'info',
+        ],
     ],
 
 ];

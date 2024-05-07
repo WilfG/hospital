@@ -5,7 +5,7 @@
     <div class="row">
         <div class="col-md-12 col-sm-12 col-xs-12">
 
-            <a href="{{route('materiels.create')}}" class="btn btn-primary" title="Enregistrer un médicament"><i class="fa fa-plus-circle"></i> Enregistrer un médicament</a>
+            <a href="{{route('patients.create')}}" class="btn btn-primary" title="Enregistrer un patient"><i class="fa fa-plus-circle"></i> Enregistrer un patient</a>
 
             <!-- ********************************************** -->
 
@@ -21,30 +21,31 @@
             @endif
 
 
-            <table id="example-11" class="datatb display table table-hover table-condensed" cellspacing="0" width="100%">
+            <table id="example-11" class="display table table-hover table-condensed" cellspacing="0" width="100%">
                 <thead>
                     <tr>
                         <th>#</th>
-                        <th>Libellé</th>
-                        <th>Description</th>
+                        <th>Prénoms</th>
+                        <th>Nom</th>
                         <th>Actions</th>
 
                     </tr>
                 </thead>
 
                 <tbody>
-                    @foreach($materiels as $materiel)
+                    @foreach($patients as $patient)
                     <tr>
                         <td>#</td>
-                        <td>{{$materiel->name}}</td>
-                        <td>{{$materiel->description}}</td>
+                        <td>{{$patient->firstname}}</td>
+                        <td>{{$patient->lastname}}</td>
                         <td style="display:flex;">
-                            <a href="{{route('materiels.edit', $materiel->id)}}" class="btn btn-warning btn-sm" style="margin: 2px;"><i class="fa fa-pencil" title="Modifier"></i></a>
-                            <form action="{{route('materiels.destroy', $materiel->id)}}" method="POST">
+                            <a href="{{route('patients.edit', $patient->id)}}" class="btn btn-warning btn-sm" style="margin: 2px;"><i class="fa fa-pencil" title="Modifier"></i></a>
+                            <form action="{{route('patients.destroy', $patient->id)}}" method="POST">
                                 @csrf
                                 @METHOD('DELETE')
                                 <button type="submit" class="btn btn-danger btn-sm" title="Supprimer"><i class="fa fa-trash"></i></button>
                             </form>
+                             <a href="{{route('patients.show', $patient->id)}}" class="btn btn-primary btn-sm" title="Dossier"><i class="fa fa-eye"></i></a>
                         </td>
 
                     </tr>

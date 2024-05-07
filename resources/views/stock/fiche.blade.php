@@ -1,8 +1,8 @@
 @extends('layout.index')
 
 @section('content')
-<h2>Stock Movements</h2>
-<table class="display table table-hover table-condensed" cellspacing="0" width="100%">
+<h2>Mouvement du stock</h2>
+<table class="datatb display table table-hover table-condensed" cellspacing="0" width="100%">
     <thead>
         <tr>
             <th>Type</th>

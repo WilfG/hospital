@@ -28,9 +28,9 @@ return new class extends Migration
             $table->string('lastname', 45)->nullable();
             $table->string('middlename', 45)->nullable();
             $table->string('gender', 6)->nullable();
-            $table->string('city', 45)->nullable();
-            $table->string('country', 45)->nullable();
-            $table->string('region', 45)->nullable();
+            $table->integer('city')->nullable();
+            $table->integer('country')->nullable();
+            $table->integer('region')->nullable();
             $table->string('occupation', 45)->nullable();
             $table->string('birthdate', 45)->nullable();
             $table->string('phoneNumber', 45)->nullable();
