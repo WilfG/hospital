@@ -125,12 +125,12 @@ class UsersController extends Controller
     public function edit(string $id)
     {
         $roles = Role::all();
-        if (auth()->user()->id == $id) {
+        // if (auth()->user()->id == $id) {
             $user = User::find($id);
             return view('users.profile', ['user' => $user, 'roles' => $roles]);
-        } else {
-            abort(500, "Une erreur s'est produite");
-        }
+        // } else {
+        //     abort(500, "Une erreur s'est produite");
+        // }
     }
 
     /**

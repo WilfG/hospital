@@ -21,9 +21,10 @@
 
             </div>
         </div> -->
+        <a href="{{route('appointments.create')}}" class="btn btn-primary" title="Enregistrer un rendez-vous"><i class="fa fa-plus-circle"></i> Enregistrer un Rendez-vous</a>
+       <br><br>
         <div class="col-md-12 col-sm-12 col-xs-12">
 
-            <!-- <a href="{{route('patients.create')}}" class="btn btn-primary" title="Enregistrer un patient"><i class="fa fa-plus-circle"></i> Enregistrer un patient</a> -->
 
             <!-- ********************************************** -->
 

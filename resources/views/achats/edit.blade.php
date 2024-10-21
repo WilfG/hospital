@@ -7,19 +7,19 @@
     <div class="page-title">
 
         <div class="float-left">
-            <h1 class="title">Modification d'une dépense</h1>
+            <h1 class="title">Enregistrement d'un achat</h1>
         </div>
 
         <div class="float-right d-none">
             <ol class="breadcrumb">
                 <li>
-                    <a href="index.html"><i class="fa fa-home"></i>Tableau de bord</a>
+                    <a href="index.html"><i class="fa fa-home"></i>Accueil</a>
                 </li>
                 <li>
-                    <a href="hos-patients.html">Dépenses</a>
+                    <a href="hos-patients.html">Achats</a>
                 </li>
                 <li class="active">
-                    <strong>Modification d'une dépense</strong>
+                    <strong>Enregistrement d'un achat</strong>
                 </li>
             </ol>
         </div>
@@ -49,29 +49,72 @@
                     {{ session('status') }}
                 </div>
                 @endif
-                <form action="{{route('expenses.update', $expense->id)}}" method="post">
+                <form action="{{route('purchases.update', $purchase->id)}}" method="post" enctype="multipart/form-data">
                     @csrf
                     @METHOD('PUT')
-                    
+                    <input type="hidden" name="previous_value" value="{{$purchase->quantity}}">
                     <div class="col-xl-8 col-lg-8 col-md-9 col-12">
+
+                        
                         <div class="form-group">
-                            <label class="form-label" for="label_categorie">Catégories</label>
-                            <span class="desc"></span>
-                            <select name="label_categorie" class="form-control" id="label_categorie">
+                            <label class="form-label" for="item_type">Type</label>
+                            <select name="item_type" class="form-control" id="item_type" required>
+                                @if($purchase->type == 'product')
+                                    <option value="product" selected>Produit</option>
+                                    <option value="material" >Matériel</option>
+                                @else
+                                    $typeselect = '';
+                                    <option value="product" >Produit</option>
+                                    <option value="material" selected>Matériel</option>
+                                @endif
+                            </select>
+                        </div>
+                        <div class="form-group" id="drug_group">
+                            <label class="form-label" for="drug">Médicaments</label>
+                            <select name="drug" class="form-control selectpicker" data-live-search="true" id="drug">
                                 <option value=""></option>
-                                @foreach($categories as $categorie)
-                                    <option value="{{$categorie->id}}" @if($categorie->id == $expense->expenses_category_id) {{'selected'}} @endif >{{$categorie->label}}</option>
+                                @foreach($drugs as $drug)
+                                    @php
+                                    if($purchase->drug_id == $drug->id){
+                                        $prodselect = 'selected';
+                                    }else{
+                                        $prodselect = '';
+                                    }
+                                    @endphp
+                                <option value="{{$drug->id}}" {{$prodselect}}>{{$drug->name}}</option>
                                 @endforeach
                             </select>
                         </div>
-                        <div class="form-group">
-                            <label class="form-label" for="reason">justificatif</label>
-                            <span class="desc"></span>
-                            <div class="controls">
-                                <input type="file" name="justificatif" value="{{$expense->justificatf}}"  class="form-control" id="reason" >
-                            </div>
+                        <div class="form-group" id="material_group">
+                            <label class="form-label" for="material">Equipements</label>
+                            <select name="material" class="form-control selectpicker" data-live-search="true" id="material">
+                                <option value=""></option>
+                                @foreach($materiels as $materiel)
+                                    @php
+                                    if($purchase->material_id == $materiel->id){
+                                        $matselect = 'selected';
+                                    }else{
+                                        $matselect = '';
+                                    }
+                                    @endphp
+                                <option value="{{$materiel->id}}" {{$matselect}}>{{$materiel->name}}</option>
+                                @endforeach
+                            </select>
                         </div>
 
+
+                        <div class="form-group">
+                            <label class="form-label" for="label_categorie">Quantité</label>
+                            <input type="number" name="quantity" id="quantity" class="form-control" value="{{$purchase->quantity}}">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label" for="cost">Prix d'acquisition</label>
+                            <input type="number" step="0.1" name="cost" id="cost" class="form-control" value="{{$purchase->cost}}">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label" for="label_categorie">Date d'approvisionnement</label>
+                            <input type="date" name="purchase_date" id="purchase_date" class="form-control" value="{{$purchase->purchase_date}}">
+                        </div>
 
 
                     </div>

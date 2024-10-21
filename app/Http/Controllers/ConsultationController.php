@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Consultation;
 use App\Models\Patient;
 use App\Models\Payment;
+use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Validator;
@@ -196,5 +197,18 @@ class ConsultationController extends Controller
     public function destroy(Consultation $consultation)
     {
         //
+    }
+
+    public function ordonnance($id)
+    {
+        $consultation = Consultation::findOrFail($id);
+        // dd($consultation);
+        return view('patients.ordonnance', compact('consultation'));
+    }
+
+    public function downloadOrdonnance($id){
+        $consultation = Consultation::findOrFail($id);
+        $pdf = Pdf::loadView('patients.ordonnance', compact('consultation'));
+        return $pdf->download(public_path('Ordonnance_'. $id . '.pdf'));
     }
 }

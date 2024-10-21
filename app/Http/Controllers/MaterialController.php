@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Material;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Validator;
 
 class MaterialController extends Controller
 {
@@ -32,12 +33,28 @@ class MaterialController extends Controller
     public function store(Request $request)
     {
         try {
-            $request->validate([
+            //code...
+            $validator = Validator::make($request->only('name', 'currentStock', 'alertStock', 'description', 'magStock') ,[
                 'name' => 'required|string',
+                'currentStock' => 'required|numeric',
+                'alertStock' => 'required|numeric',
+                'magStock' => 'required|numeric',
                 'description' => 'required|string',
             ]);
+            
+            if ($validator->fails()) {
+                return redirect()->back()->with('errors', $validator->errors());
+            }
+            // dd($request->currentStock);
 
-            $materiel = Material::create($request->all());
+
+            $materiel = Material::create([
+                'name' => $request->name,
+                'currentStock' => $request->currentStock,
+                'alertStock' => $request->alertStock,
+                'stockMag' => $request->magStock,
+                'description' => $request->description
+            ]);
             if ($materiel) {
                 Log::channel('gestion_stock_log')->info(auth()->user()->lastname . ' ' . auth()->user()->firstname . ' a ajouté le médicament ' . $request->name);
                 return redirect()->route('materiels.index')->with('success', 'Matériel ajouté avec succès.');
@@ -72,10 +89,19 @@ class MaterialController extends Controller
     public function update(Request $request, $id)
     {
         try {
-            $request->validate([
-                'name' => 'required',
-                'description' => 'nullable',
+            $validator = Validator::make($request->only('name', 'currentStock', 'alertStock', 'description', 'magStock') ,[
+                'name' => 'nullable|string',
+                'currentStock' => 'nullable|numeric',
+                'alertStock' => 'nullable|numeric',
+                'magStock' => 'nullable|numeric',
+                'description' => 'nullable|string',
             ]);
+            
+            if ($validator->fails()) {
+                return redirect()->back()->with('errors', $validator->errors());
+            }
+            // dd($request->currentStock);
+
 
             $material = Material::findOrFail($id);
 

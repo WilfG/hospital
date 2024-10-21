@@ -17,10 +17,10 @@ return new class extends Migration
             $table->text('description');
             $table->string('status')->default('open'); // Add default status
             $table->string('priority')->nullable(); // Allow priority to be null
-            $table->unsignedBigInteger('created_by');
-            $table->foreign('created_by')->references('id')->on('users')->onDelete('cascade');
-            $table->unsignedBigInteger('assigned_to')->nullable(); // Optional for Option 1
-            $table->foreign('assigned_to')->references('id')->on('users')->onDelete('cascade'); // Optional for Option 1
+            $table->unsignedBigInteger('assigned_to');
+            $table->foreign('assigned_to')->references('id')->on('users')->onDelete('cascade');
+            // $table->unsignedBigInteger('assigned_to')->nullable(); // Optional for Option 1
+            // $table->foreign('assigned_to')->references('id')->on('users')->onDelete('cascade'); // Optional for Option 1
             $table->timestamps();
         });
     }

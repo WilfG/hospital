@@ -10,10 +10,10 @@
             <br><br>
 
             <!-- Start Searchbox -->
-            <form class="searchform">
+            <!-- <form class="searchform">
                 <input type="text" class="searchbox" id="searchticket" placeholder="Rechercher un ticket">
                 <span class="searchbutton"><i class="fa fa-search"></i></span>
-            </form>
+            </form> -->
             <!-- End Searchbox -->
             <!-- ********************************************** -->
 
@@ -27,16 +27,16 @@
                 {{ session('success') }}
             </div>
             @endif
-            <table id="tickets_results" class="datatb display table table-hover table-condensed" cellspacing="0" width="100%">
-                <!-- <thead>
+            <table id="example-11" class="datatb display table table-hover table-condensed" cellspacing="0" width="100%">
+                <thead>
                     <tr>
-                        <th>#</th>
+                        <!-- <th>#</th> -->
                         <th>Libellé</th>
-                        <th>Description</th>
+                        <!-- <th>Description</th> -->
                         <th>Actions</th>
 
                     </tr>
-                </thead> -->
+                </thead>
 
                 <tbody>
                     @if (auth()->user()->role_id == 1)
@@ -44,8 +44,13 @@
                     <tr>
                         <td>
                             <a href="{{ route('tickets.show', $ticket->id) }}">
-                                {{ $ticket->title }} (Assigné à: {{ $ticket->assignedTo ? $ticket->assignedTo->name : 'Non assigné' }})
+                                {{ $ticket->title . "(". $ticket->messages->count() . ")" }}
                             </a>
+                            (Administrateur: {{ $ticket->assignedTo->lastname . ' '. $ticket->assignedTo->firstname}}, Assigné à: {{ $ticket->assignedUsers->pluck('firstname')->join(', ') }})
+
+                        </td>
+                        <td>
+                            <a href="{{route('tickets.edit', $ticket->id)}}" class="btn btn-warning btn-sm" style="margin: 2px;"><i class="fa fa-pencil" title="Modifier"></i></a>
                         </td>
                     </tr>
                     @endforeach

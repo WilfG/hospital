@@ -268,6 +268,7 @@ class ExpenseRequestController extends Controller
             $verify = $this->allValuesEqualToOne($validation_table);
             if ($verify) {
                 $validate_request = ExpenseRequest::find($request->to_be_vldt);
+                $code = $validate_request->code;
                 $author_id = $validate_request->user_id;
                 $validate_request->status = 'completed';
                 $validate_request->save();
@@ -278,7 +279,7 @@ class ExpenseRequestController extends Controller
                 $subject = auth()->user()->firstname . ' ' . auth()->user()->lastname . " a valide votre requête";
                 Mail::send(
                     'email.expense_request',
-                    ['name' => $name],
+                    ['name' => $name, 'code' => $code, 'expenseReq' => $validate_request],
                     function ($mail) use ($email, $name, $subject) {
                         $mail->from(getenv('MAIL_FROM_ADDRESS'), "HOPITAL SAINT ANTOINE DE PADOUE");
                         $mail->to($email, $name);

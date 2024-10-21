@@ -19,7 +19,7 @@
                     <a href="hos-patients.html">Achats</a>
                 </li>
                 <li class="active">
-                    <strong>Enregistrement d'une achat</strong>
+                    <strong>Enregistrement d'un achat</strong>
                 </li>
             </ol>
         </div>
@@ -64,18 +64,18 @@
                                 <option value="material">Matériel</option>
                             </select>
                         </div>
-                        <div class="form-group">
+                        <div class="form-group" id="drug_group">
                             <label class="form-label" for="drug">Médicaments</label>
-                            <select name="drug" class="form-control" id="drug" >
+                            <select name="drug" class="form-control selectpicker" data-live-search="true" id="drug" >
                                 <option value=""></option>
                                 @foreach($drugs as $drug)
                                 <option value="{{$drug->id}}">{{$drug->name}}</option>
                                 @endforeach
                             </select>
                         </div>
-                        <div class="form-group">
+                        <div class="form-group" id="material_group">
                             <label class="form-label" for="material">Equipements</label>
-                            <select name="material" class="form-control" id="material" >
+                            <select name="material" class="form-control selectpicker" data-live-search="true" id="material" >
                                 <option value=""></option>
                                 @foreach($materiels as $materiel)
                                 <option value="{{$materiel->id}}">{{$materiel->name}}</option>

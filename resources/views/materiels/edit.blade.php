@@ -19,7 +19,7 @@
                     <a href="hos-patients.html">Médicaments</a>
                 </li>
                 <li class="active">
-                    <strong>Modification d'une dépense</strong>
+                    <strong>Modification des informations d'un matériel</strong>
                 </li>
             </ol>
         </div>
@@ -62,6 +62,19 @@
                             <label class="form-label" for="label_categorie">Description</label>
                             <textarea name="description" class="form-control" >{{$materiel->description}}</textarea>
                         </div>
+                        <div class="form-group">
+                            <label class="form-label" for="currentStock">Stock actuel</label>
+                            <input type="number" min="0" name="currentStock" class="form-control" value="{{old('currentStock')}}">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label" for="alertStock">Stock alerte</label>
+                            <input type="number" min="0" name="alertStock" class="form-control" value="{{old('alertStock')}}">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label" for="magStock">Stock au magasin</label>
+                            <input type="number" min="0" name="magStock" class="form-control" value="{{old('magStock')}}">
+                        </div>
+                        
 
                     </div>
 

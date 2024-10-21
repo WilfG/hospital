@@ -258,6 +258,7 @@
                                                         <th>Examens</th>
                                                         <th>Diagnostic</th>
                                                         <th>Montant</th>
+                                                        <th>documents</th>
 
                                                     </tr>
                                                 </thead>
@@ -272,15 +273,21 @@
                                                         <td>{!!$consultation->diagnostic!!}</td>
                                                         <td>{!!$consultation->examens!!}</td>
                                                         <td>{{$consultation->montant}}</td>
-                                                        <!-- <td style="display:flex;"> -->
-                                                        <!-- <a href="{{route('consultations.edit', $consultation->id)}}" class="btn btn-warning btn-sm" style="margin: 2px;"><i class="fa fa-pencil" title="Modifier"></i></a> -->
-                                                        <!-- <a href="{{route('consultations.show', $consultation->id)}}" class="btn btn-primary btn-sm" title="Fiche de stock"><i class="fa fa-eye"></i></a>
-                                                            <form action="{{route('consultations.destroy', $consultation->id)}}" method="POST">
+                                                        <td style="display:flex;">
+                                                            <a href="{{route('ordonnance', $consultation->id)}}" target="_blank" class="btn btn-warning btn-sm" style="margin: 2px;"><i class="fa fa-file-o" title="Voir l'ordonnance"></i></a>
+                                                            <!-- <a href="{{route('consultations.show', $consultation->id)}}" class="btn btn-primary btn-sm" title="Télécharger l'ordonnance"><i class="fa fa-download"></i></a> -->
+                                                            <a href="{{route('download-ordonnance', $consultation->id)}}" class="btn btn-primary d-none" id="generate-pdf-btn" >Télécharger</a>
+                                                            <!-- <form action="/generate-invoice" method="POST" id="generate-form">
+                                                                @csrf
+                                                                <input type="hidden" name="body" id="body">
+                                                                <input type="hidden" name="consultation_id" value="{{ $consultation->id }}">
+                                                            </form> -->
+                                                            <!-- <form action="{{route('consultations.destroy', $consultation->id)}}" method="POST">
                                                                 @csrf
                                                                 @METHOD('DELETE')
                                                                 <button type="submit" class="btn btn-danger btn-sm" title="Supprimer"><i class="fa fa-trash"></i></button>
-                                                            </form> -->
-                                                        <!-- </td> -->
+                                                            </form>  -->
+                                                        </td>
 
                                                     </tr>
                                                     @endforeach
@@ -377,7 +384,7 @@
                                                         <td>{{$apt->appointment_time }} </td>
                                                         <td>{{$apt->user->firstname}}</td>
                                                         <td>{!!$apt->notes!!}</td>
-                                                       
+
 
                                                     </tr>
                                                     @endforeach
@@ -414,4 +421,6 @@
     </section>
 </div>
 <!-- END CONTENT -->
+<iframe id="iframe" src="{{ route('download-ordonnance', $consultation) }}" frameborder="0" style="background-color: white;min-height: inherit; width:100%;">
+</iframe>
 @endsection

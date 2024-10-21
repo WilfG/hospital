@@ -37,14 +37,14 @@
                     <tr>
                         <td>#</td>
                         <td>{{$drug->name}}</td>
-                        <td>{{$drug->description}}</td>
+                        <td>{!!$drug->description!!}</td>
                         <td style="display:flex;">
                             <a href="{{route('drugs.edit', $drug->id)}}" class="btn btn-warning btn-sm" style="margin: 2px;"><i class="fa fa-pencil" title="Modifier"></i></a>
-                            <form action="{{route('drugs.destroy', $drug->id)}}" method="POST">
+                            <!-- <form action="{{route('drugs.destroy', $drug->id)}}" method="POST">
                                 @csrf
                                 @METHOD('DELETE')
                                 <button type="submit" class="btn btn-danger btn-sm" title="Supprimer"><i class="fa fa-trash"></i></button>
-                            </form>
+                            </form> -->
                              <a href="{{route('fifo_product', $drug->id)}}" class="btn btn-primary btn-sm" title="Fiche de stock"><i class="fa fa-eye"></i></a>
                         </td>
 

@@ -135,12 +135,12 @@ smaller than 428
 ================================================================================= */
 @media screen and (max-width: 428px) {
 	.top-right {
-		display: none;
+		display: block;
 	}
 	.applogo {
 		padding-left: 0;
 		background: none;
-		display: block;
+		display: none;
 		position: absolute;
 		top: 0;
 		left: 0;

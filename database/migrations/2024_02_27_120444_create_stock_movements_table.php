@@ -18,6 +18,8 @@ return new class extends Migration
             $table->unsignedBigInteger('item_id');
             $table->integer('quantity');
             $table->date('movement_date');
+            $table->unsignedBigInteger('purchase_id');
+            $table->unsignedBigInteger('sale_id');
             $table->timestamps();
         });
     }

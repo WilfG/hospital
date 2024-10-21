@@ -54,13 +54,21 @@
                     @METHOD('POST')
  
                     <div class="col-xl-8 col-lg-8 col-md-9 col-12">
-                        <div class="form-group">
-                            <label class="form-label" for="label_categorie">Libellé du médicament</label>
+                    <div class="form-group">
+                            <label class="form-label" for="">Libellé du médicament</label>
                             <input type="text" name="name" class="form-control" value="{{old('name')}}">
                         </div>
                         <div class="form-group">
-                            <label class="form-label" for="label_categorie">Description</label>
+                            <label class="form-label" for="">Description</label>
                             <textarea name="description" class="form-control" value="{{old('description')}}"></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label" for="currentStock">Stock actuel</label>
+                            <input type="number" min="0" name="currentStock" class="form-control" value="{{old('currentStock')}}">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label" for="alertStock">Stock alerte</label>
+                            <input type="number" min="0" name="alertStock" class="form-control" value="{{old('alertStock')}}">
                         </div>
                         
                     </div>

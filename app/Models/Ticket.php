@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class Ticket extends Model
 {
@@ -14,12 +15,12 @@ class Ticket extends Model
         'description',
         'status', // Add status (e.g., open, closed, pending)
         'priority', // Add priority (e.g., low, medium, high)
-        'created_by',
+        'assigned_to',
     ];
 
-    public function user()
+    public function assignedUsers(): BelongsToMany
     {
-        return $this->belongsTo(User::class, 'created_by'); 
+        return $this->belongsToMany(User::class, 'ticket_user'); 
     }
 
     public function messages()

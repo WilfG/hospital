@@ -16,7 +16,7 @@
 
 <!-- BEGIN BODY -->
 
-<body style="background-image: url({{asset('assets/images/accueil.jpg')}});background-repeat: no-repeat; width:100%;">
+<body style="background-image: url('{{asset('assets/images/accueil.jpg')}}');background-repeat: no-repeat; background-size: cover;background-position: center center">
 
     <div class="login-form">
         @if (session('errors'))
@@ -29,7 +29,7 @@
             {{ session('status') }}
         </div>
         @endif
-        <form name="loginform" id="loginform" action="/login" method="post">
+        <form name="loginform" id="loginform" action="/login" method="post" style="opacity: 0.8;">
             <div class="top">
                 <img src="{{asset('assets/img/logo_st_antoine.png')}}" alt="icon" class="icon">
                 <!-- <h1>Kode</h1>

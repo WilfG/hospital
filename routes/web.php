@@ -7,6 +7,7 @@ use App\Http\Controllers\DrugController;
 use App\Http\Controllers\ExpenseController;
 use App\Http\Controllers\ExpenseRequestController;
 use App\Http\Controllers\MaterialController;
+use App\Http\Controllers\MatUsagesController;
 use App\Http\Controllers\PatientsController;
 use App\Http\Controllers\PermissionController;
 use App\Http\Controllers\PurchaseController;
@@ -14,9 +15,12 @@ use App\Http\Controllers\RoleController;
 use App\Http\Controllers\SaleController;
 use App\Http\Controllers\TicketController;
 use App\Http\Controllers\UsersController;
+use App\Models\Drug;
 use App\Models\ExpenseRequest;
+use App\Models\Sale;
 use App\Models\User;
 use Illuminate\Support\Facades\Artisan;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -42,7 +46,30 @@ Route::middleware('auth')->group(function () {
     Route::get('/dashboard', function () {
         $auth_user = User::find(auth()->user()->id);
         // $roles = $auth_user->roles->toArray();
-        return view('welcome');
+        $totMonthSales = DB::table('sales') // Total des ventes du mois
+        ->whereYear('created_at', date('Y'))
+            ->whereMonth('created_at', date('m'))
+            ->selectRaw('SUM(quantity * sale_price) as total_month_sales')
+            ->value('total_month_sales');
+
+        $totDaySales = DB::table('sales') // Total des ventes du jour
+        ->whereYear('created_at', date('Y'))
+            ->whereDay('created_at', date('d'))
+            ->whereMonth('created_at', date('m'))
+
+            ->selectRaw('SUM(quantity * sale_price) as total_day_sales')
+            ->value('total_day_sales');
+        // dd($totDaySales);
+
+        $totCurrentMthPatients = DB::table('patients') // Total des patients du mois
+        ->whereMonth('created_at', date('m'))
+        ->whereYear('created_at', date('Y'))->count();
+
+        $fiveLastpatients = DB::table('patients')->latest()->limit(5)->get();
+
+        $outStockProds = DB::table('drugs')->whereColumn('currentStock', '<=', 'alertStock')->get();
+        // dd($outStockProds);
+        return view('welcome', compact('totMonthSales', 'totDaySales', 'totCurrentMthPatients','fiveLastpatients', 'outStockProds'));
     })->name('dashboard');
 
     Route::prefix('facturation_gestion_financiere')->group(function () {
@@ -58,6 +85,14 @@ Route::middleware('auth')->group(function () {
         Route::resource('materiels', MaterialController::class);
         Route::resource('purchases', PurchaseController::class);
         Route::resource('sales', SaleController::class);
+        Route::resource('usages', MatUsagesController::class);
+        Route::post('/import', [MatUsagesController::class, 'import'])->name('import');
+        Route::get('/import', [MatUsagesController::class, 'importview'])->name('importview');
+
+        // Route::get('/create_mat/{$sale}', [SaleController::class, 'create_mat'])->name('sales_edit_mat');
+        // Route::get('/edit_mat_used/{$sale}', [SaleController::class, 'edit_mat'])->name('sales_edit_mat');
+        // Route::post('/store_mat_used', [SaleController::class, 'store_mat'])->name('sales_store_mat');
+        // Route::put('/store_update_used', [SaleController::class, 'update_mat'])->name('sales_update_mat');
         Route::get('/stockmovements', [SaleController::class, 'fiche_stock'])->name('stockmovements');
         Route::get('/fifo_product/{id}', [SaleController::class, 'fiche_fifo_product'])->name('fifo_product');
         Route::get('/fifo_materiel/{id}', [SaleController::class, 'fiche_fifo_materiel'])->name('fifo_materiel');
@@ -77,7 +112,7 @@ Route::middleware('auth')->group(function () {
 
     Route::prefix('gestion_ticket')->group(function () {
         Route::get('/searchticket', [TicketController::class, 'search']);
-        
+
         Route::resource('/tickets', TicketController::class);
         Route::post('/tickets/{ticket}/messages', [TicketController::class, 'addMessage'])->name('tickets.add_message');
     });
@@ -85,5 +120,7 @@ Route::middleware('auth')->group(function () {
         Route::resource('patients', PatientsController::class);
         Route::resource('consultations', ConsultationController::class);
         Route::resource('appointments', AppointmentController::class);
+        Route::get('ordonnance/{id}', [ConsultationController::class, 'ordonnance'])->name('ordonnance');
+        Route::get('download-ordonnance/{id}', [ConsultationController::class, 'downloadOrdonnance'])->name('download-ordonnance');
     });
 });

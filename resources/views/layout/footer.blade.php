@@ -157,26 +157,33 @@ Below codes are only for index widgets
  </script>
 
  <script type="text/javascript">
+   function confirmDelete() {
+     return confirm('Etes-vous sûr de vouloir supprimer cet element ?');
+   }
+
    $(document).ready(function() {
      $('#multiselect').multiselect();
 
-     $('#material').hide();
-     $('#material').parent().hide();
+     $('#material_group').hide();
      $('#item_type').change(function() {
        //  alert()
        if ($(this).val() == 'product') {
-         $('#material').val('').hide();
-         $('#material').parent().hide();
-         $('#drug').show();
-         $('#drug').parent().show();
+         $('#material_group').val('').hide();
+         $('#drug_group').show();
        } else {
-         $('#drug').val('').hide();
-         $('#drug').parent().hide();
+         $('#drug_group').val('').hide();
 
-         $('#material').show();
-         $('#material').parent().show();
+         $('#material_group').show();
        }
 
+     });
+
+     //ticket reply
+     $('#replyModal').on('show.bs.modal', function(event) {
+       var button = $(event.relatedTarget); // Button that triggered the modal
+       var messageId = button.data('message-id'); // Extract info from data-* attributes
+       var modal = $(this);
+       modal.find('.modal-body #parentMessageId').val(messageId); // Set the parent ID for the form
      });
 
      $('.downloadBtn').click(function() {
@@ -274,9 +281,13 @@ Below codes are only for index widgets
          // You can customize how you want to display the additional data here
        }
      });
+
+
+
+
      $('.datatb').DataTable({
        "language": {
-         "sUrl": "custom_fr.txt"
+         "sUrl": "{{asset('assets/custom_fr.txt')}}"
        }
      });
 
@@ -319,6 +330,59 @@ Below codes are only for index widgets
      });
 
 
+   });
+
+
+   $('#resultSales').hide();
+   $('#formSalesFilter').on('submit', function(e) {
+
+     e.preventDefault();
+     //  $('#salesTable').html('');
+     $dateFrom = $('#dateFrom').val();
+     $dateTo = $('#dateTo').val();
+
+
+     $.ajax({
+       url: "{{url('api/fetch-sales')}}",
+       type: "POST",
+       data: {
+         dateFrom: $dateFrom,
+         dateTo: $dateTo,
+         _token: '{{csrf_token()}}'
+       },
+       dataType: 'json',
+       success: function(res) {
+         console.log(res.salestot)
+         $('#salesTableBody').html('');
+         $('#resultSales').show();
+
+         const tableBody = document.getElementById('salesTableBody');
+         let totalSalePrice = 0;
+         res.salestot.forEach(sale => {
+           const row = document.createElement('tr');
+
+           row.innerHTML = `
+                    <td>#</td>
+                    <td>${sale.name}</td>
+                    <td>${sale.quantity}</td>
+                    <td>${sale.sale_price}</td>
+                    <td>${sale.sale_date}</td>
+                `;
+
+           // Append row to the table body
+           tableBody.appendChild(row);
+
+           // Accumulate the total sale price
+           totalSalePrice += parseFloat(sale.sale_price) * parseFloat(sale.quantity);
+         });
+
+         // Display the total sale price at the bottom
+         document.getElementById('totalSalePrice').innerHTML = `<strong>${totalSalePrice.toFixed(2)}</strong>`;
+       },
+       error: function(err) {
+         alert('erreur');
+       }
+     })
    });
 
    $('#country-dd').on('change', function() {

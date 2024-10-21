@@ -29,7 +29,7 @@
                 <div class="card card-primary card-outline">
                     <div class="card-body box-profile">
                         <div class="text-center">
-                            <img class="profile-user-img img-fluid img-circle" src="{{ asset('storage/'. auth()->user()->photo) }}" alt="Photo de profil" id="render_img" style="width: 100px; height: 100px;">
+                            <img class="profile-user-img img-fluid img-circle" src="{{ asset('storage/'. $user->photo) }}" alt="Photo de profil" id="render_img" style="width: 100px; height: 100px;">
                             <!-- <span class="fa fa-pencil-alt" id="edit-avatar" style="position: absolute; cursor: pointer;"></span> -->
 
                         </div>
@@ -68,7 +68,7 @@
                                     {{ session('status') }}
                                 </div>
                                 @endif
-                                <form class="form-horizontal" action="{{ route('users.update', auth()->user()->id) }}" method="POST" enctype="multipart/form-data">
+                                <form class="form-horizontal" action="{{ route('users.update', $user->id) }}" method="POST" enctype="multipart/form-data">
                                     @csrf
                                     @method('PUT')
 
@@ -76,7 +76,7 @@
                                         <label for="inputName" class="col-sm-2 col-form-label">Nom</label>
                                         <div class="col-sm-10">
                                             <div class="input-group">
-                                                <input type="text" class="form-control" name="lastname" value="{{auth()->user()->lastname}}" id="lastname">
+                                                <input type="text" class="form-control" name="lastname" value="{{$user->lastname}}" id="lastname">
                                             </div>
                                         </div>
                                     </div>
@@ -85,7 +85,7 @@
                                         <label for="inputName" class="col-sm-2 col-form-label">Prénom</label>
                                         <div class="col-sm-10">
                                             <div class="input-group">
-                                                <input type="text" class="form-control" name="firstname" value="{{ auth()->user()->firstname }}" id="firstname">
+                                                <input type="text" class="form-control" name="firstname" value="{{ $user->firstname }}" id="firstname">
                                             </div>
                                         </div>
                                     </div>
@@ -93,7 +93,7 @@
                                     <div class="form-group row">
                                         <label for="email" class="col-sm-2 col-form-label">Email</label>
                                         <div class="col-sm-10">
-                                            <input type="email" name="email" class="form-control" id="email" value="{{ auth()->user()->email }}">
+                                            <input type="email" name="email" class="form-control" id="email" value="{{ $user->email }}">
                                         </div>
                                     </div>
 
@@ -181,7 +181,7 @@
                                             <form action="/password-update-request" method="post">
                                                 @csrf
                                                 @method('POST')
-                                                <input type="email" name="email" value="{{ auth()->user()->email }}" hidden />
+                                                <input type="email" name="email" value="{{ $user->email }}" hidden />
                                                 <button class="btn btn-secondary" type="submit">Changer mon mot de passe</button>
                                             </form>
                                         </div>

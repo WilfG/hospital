@@ -8,10 +8,15 @@ use Illuminate\Database\Eloquent\Model;
 class Sale extends Model
 {
     use HasFactory;
-    protected $fillable = ['drug_id', 'quantity', 'sale_price', 'sale_date'];
+    protected $fillable = ['drug_id', 'quantity', 'sale_price', 'sale_date', 'material_id'];
 
     public function drug()
     {
         return $this->belongsTo(Drug::class);
+    }
+
+    public function material()
+    {
+        return $this->belongsTo(Material::class);
     }
 }

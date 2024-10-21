@@ -16,7 +16,7 @@
                     <a href="index.html"><i class="fa fa-home"></i>Accueil</a>
                 </li>
                 <li>
-                    <a href="hos-patients.html">Rôles</a>
+                    <a href="hos-patients.html">Tickets</a>
                 </li>
                 <li class="active">
                     <strong>Enregistrement d'un ticket</strong>
@@ -63,16 +63,39 @@
                     </div>
 
                     <div class="form-group">
-                        <label for="priority">Priority (Optional):</label>
+                        <label for="priority">Priorité (Optional):</label>
                         <select name="priority" id="priority" class="form-control">
-                            <option value="">Select Priority</option>
-                            <option value="low">Low</option>
-                            <option value="medium">Medium</option>
-                            <option value="high">High</option>
+                            <option value="">Selectionner Priorité</option>
+                            <option value="low">Faible</option>
+                            <option value="medium">Important</option>
+                            <option value="high">Urgent</option>
                         </select>
                     </div>
 
-                    <button type="submit" class="btn btn-primary">Create Ticket</button>
+
+                    <div class="row">
+                            <div class="form-group col-lg-4 col-md-4 col-sm-4 col-xs-4">
+                                <label for="tags">Liste des personnes :</label>
+                                <select name="from" id="multiselect" class="form-control" multiple="multiple">
+                                    @foreach($users as $user)
+                                    <option value="{{ $user->id }}">{{ $user->firstname . ' ' . $user->lastname }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+
+                            <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3">
+                                <button type="button" id="multiselect_rightAll" class="btn btn-block"><i class="fa fa-forward"></i></button>
+                                <button type="button" id="multiselect_rightSelected" class="btn btn-block"><i class="fa fa-chevron-right"></i></button>
+                                <button type="button" id="multiselect_leftSelected" class="btn btn-block"><i class="fa fa-chevron-left"></i></button>
+                                <button type="button" id="multiselect_leftAll" class="btn btn-block"><i class="fa fa-backward"></i></button>
+                            </div>
+                            <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
+                                <label for="multiselect_to">Liste des personnes choisies:</label>
+                                <select name="assigned_users[]" id="multiselect_to" class="form-control" size="8" multiple="multiple">
+                                </select>
+                            </div>
+                        </div>
+                    <button type="submit" class="btn btn-primary">Creer le Ticket</button>
                 </form>
             </div>
 

@@ -28,7 +28,10 @@
                 <li><a href="{{route('drugs.index')}}">Liste des médicaments</a></li>
                 <li><a href="{{route('materiels.index')}}">Liste des matériels</a></li>
                 <li><a href="{{route('purchases.index')}}">Approvisionnement </a></li>
-                <li><a href="{{route('sales.index')}}">Ventes / Sorties </a></li>
+                
+                <li><a href="#">Ventes / Sorties </a></li>
+                <li><a href="{{route('sales.index')}}">--Ventes / Sorties Produits</a></li>
+                <li><a href="{{route('usages.index')}}">--Ventes / Sorties Matériel </a></li>
                 <li><a href="{{route('stockmovements')}}">Fiche de stock </a></li>
             </ul>
         </li>
@@ -39,9 +42,9 @@
             <a href="#"><span class="icon color7"><i class="fa fa-money"></i></span>Gestion des utilisateurs<span class="caret"></span></a>
             <ul>
                 <li><a href="{{route('users.index')}}">Liste des utilisateurs</a></li>
-                <li><a href="{{route('expenses.index')}}">Liste des rôles </a></li>
+                <li><a href="{{route('roles.index')}}">Liste des rôles </a></li>
                 <li>
-                    <a href="{{route('expenses_requests.index')}}">Liste des permissions</a>
+                    <a href="{{route('permissions.index')}}">Liste des permissions</a>
                 </li>
             </ul>
 

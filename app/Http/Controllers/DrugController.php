@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Drug;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Validator;
 
 class DrugController extends Controller
 {
@@ -26,12 +27,27 @@ class DrugController extends Controller
     {
         try {
             //code...
-            $request->validate([
-                'name' => 'required|string',
+            $validator = Validator::make($request->only('name', 'currentStock', 'alertStock', 'description') ,[
+                'name' => ['required', 'min:2', 'max:100', 'unique:drugs,name'],
+                'currentStock' => 'required|numeric',
+                'alertStock' => 'required|numeric',
+                'magStock' => 'required|numeric',
                 'description' => 'required|string',
             ]);
+            
+            if ($validator->fails()) {
+                return redirect()->back()->with('errors', $validator->errors());
+            }
+            // dd($request->currentStock);
 
-            $drug = Drug::create($request->all());
+            $drug = Drug::create([
+                'name' => $request->name,
+                'currentStock' => $request->currentStock,
+                'alertStock' => $request->alertStock,
+                'stockMag' => $request->magStock,
+                'description' => $request->description
+            ]);
+
             if ($drug) {
                 Log::channel('gestion_stock_log')->info(auth()->user()->lastname . ' ' . auth()->user()->firstname . ' a ajouté le produit ' . $request->name);
                 return redirect()->route('drugs.index')->with('success', 'Médicament ajouté avec succes.');
@@ -58,18 +74,23 @@ class DrugController extends Controller
     {
         try {
             //code...
-            $request->validate([
-                'name' => 'required',
-                'description' => 'nullable',
-                // 'price' => 'required|numeric',
+            $validator = Validator::make($request->only('name', 'currentStock', 'alertStock', 'description') ,[
+                'name' => 'required|string',
+                'currentStock' => 'required|numeric',
+                'alertStock' => 'required|numeric',
+                'description' => 'required|string',
             ]);
-            // dd($request->description);
+
+            if ($validator->fails()) {
+                return redirect()->back()->with('errors', $validator->errors());
+            }
+           // dd($request->description);
             $product = Drug::findOrFail($id);
 
             if ($product) {
                 $product->update($request->all());
                 Log::channel('gestion_stock_log')->info(auth()->user()->lastname . ' ' . auth()->user()->firstname . ' a modifié le produit ' . $request->name);
-                return redirect()->route('drugs.index')->with('success', 'Produit modifiè avec succès');
+                return redirect()->route('drugs.index')->with('success', 'Produit modifié avec succès');
             }
         } catch (\Throwable $th) {
             Log::channel('gestion_stock_log')->info(auth()->user()->lastname . ' ' . auth()->user()->firstname . ' a essayé de modifier le produit ' . $request->name .' sans succès');

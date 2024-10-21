@@ -17,7 +17,7 @@
 
 <form class="form-horizontal" action="{{ route('users.store') }}" method="POST" enctype="multipart/form-data">
     @csrf
-
+    @METHOD('POST')
     <div class="form-group row">
         <label for="lastname" class="col-sm-2 control-label form-label">Nom </label>
         <div class="col-sm-8">

@@ -61,13 +61,22 @@ class User extends Authenticatable
         return $this->hasMany(Role::class);
     }
 
-    public function tikets(): HasMany
+    public function ticketsOwned() : HasMany
     {
-        return $this->hasMany(Ticket::class);
+        return $this->hasMany(Ticket::class, 'assigned_to');
+    }
+
+    public function tikets(): BelongsToMany
+    {
+        return $this->belongsToMany(Ticket::class, 'ticket_user');
     } 
     
     public function messages(): HasMany
     {
         return $this->hasMany(TicketMessage::class);
+    } 
+    public function stockmovements(): HasMany
+    {
+        return $this->hasMany(StockMovement::class);
     } 
 }

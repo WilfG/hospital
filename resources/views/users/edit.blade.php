@@ -12,7 +12,7 @@
                 <div class="card card-primary card-outline">
                     <div class="card-body box-profile">
                         <div class="text-center">
-                            <img class="profile-user-img img-fluid img-circle" src="{{ asset('storage/'. $user()->photo) }}" alt="Photo de profil" id="render_img" style="width: 100px; height: 100px;">
+                            <img class="profile-user-img img-fluid img-circle" src="{{ asset('storage/'. $user->photo) }}" alt="Photo de profil" id="render_img" style="width: 100px; height: 100px;">
                             <!-- <span class="fa fa-pencil-alt" id="edit-avatar" style="position: absolute; cursor: pointer;"></span> -->
 
                         </div>

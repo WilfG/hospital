@@ -24,6 +24,8 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 Route::post('fetch-states', [PatientsController::class, 'fetchState']);
 Route::post('fetch-cities', [PatientsController::class, 'fetchCity']);
+Route::post('fetch-patients', [PatientsController::class, 'fetchPatientsTot']);
+Route::post('fetch-sales', [PatientsController::class, 'fetchSalesTot']);
 Route::get('appointments', [AppointmentController::class, 'fetchAppointment']);
 Route::post('categoryExp', [CategoryExpensesAPIController::class, 'store']);
 Route::get('categoryExpList', [CategoryExpensesAPIController::class, 'index']);

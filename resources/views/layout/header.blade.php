@@ -44,11 +44,11 @@
             <a href="#" data-toggle="dropdown" class="dropdown-toggle hdbutton">Mes modules <span class="caret"></span></a>
             <ul class="dropdown-menu dropdown-menu-list">
                 <li><a href="{{url('/dashboard')}}"><i class="fa falist fa-money"></i>Tableau de bord</a></li>
-                <li><a href="{{route('users.index')}}"><i class="fa falist fa-user"></i>Gestion des utilisateurs</a></li>
-                <li><a href="{{route('expenses.index')}}"><i class="fa falist fa-money"></i>Gestion des dépenses</a></li>
-                <li><a href="{{route('drugs.index')}}"><i class="fa falist fa-money"></i>Gestion des stocks</a></li>
-                <li><a href="{{route('tickets.index')}}"><i class="fa falist fa-money"></i>Tickets</a></li>
                 <li><a href="{{route('patients.index')}}"><i class="fa falist fa-money"></i>Gestion des patients</a></li>
+                <li><a href="{{route('drugs.index')}}"><i class="fa falist fa-money"></i>Gestion des stocks</a></li>
+                <li><a href="{{route('expenses.index')}}"><i class="fa falist fa-money"></i>Gestion des dépenses</a></li>
+                <li><a href="{{route('tickets.index')}}"><i class="fa falist fa-money"></i>Tickets</a></li>
+                <li><a href="{{route('users.index')}}"><i class="fa falist fa-user"></i>Gestion des utilisateurs</a></li>
             </ul>
         </li>
 
@@ -57,7 +57,7 @@
             </li> -->
 
         <li class="dropdown link">
-            <a href="#" data-toggle="dropdown" class="dropdown-toggle profilebox"><img src="{{asset('assets/img/profileimg.png')}}" alt="img"><b>{{auth()->user()->firstname . ' '.auth()->user()->lastname }}</b><span class="caret"></span></a>
+            <a href="#" data-toggle="dropdown" class="dropdown-toggle profilebox"><img src="/storage/{{auth()->user()->photo}}" alt="img"><b>{{auth()->user()->firstname . ' '.auth()->user()->lastname }}</b><span class="caret"></span></a>
             <ul class="dropdown-menu dropdown-menu-list dropdown-menu-right">
                 <li role="presentation" class="dropdown-header">Profile</li>
                 <!-- <li><a href="#"><i class="fa falist fa-inbox"></i>Inbox<span class="badge label-danger">4</span></a></li> -->

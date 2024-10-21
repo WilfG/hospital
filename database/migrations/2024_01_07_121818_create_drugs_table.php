@@ -26,6 +26,8 @@ return new class extends Migration
             $table->string('name', 100);
             $table->string('description');
             $table->string('Manufacturer', 100)->nullable();
+            $table->float('currentStock')->default(0)->nullable();
+            $table->float('alertStock')->default(0)->nullable();
             $table->timestamps();
 
         });

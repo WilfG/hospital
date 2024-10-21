@@ -7,19 +7,19 @@
     <div class="page-title">
 
         <div class="float-left">
-            <h1 class="title">Modification d'un produit</h1>
+            <h1 class="title">Modification d'une vente/sortie</h1>
         </div>
 
         <div class="float-right d-none">
             <ol class="breadcrumb">
                 <li>
-                    <a href="index.html"><i class="fa fa-home"></i>Tableau de bord</a>
+                    <a href="index.html"><i class="fa fa-home"></i>Accueil</a>
                 </li>
                 <li>
-                    <a href="hos-patients.html">Dépenses</a>
+                    <a href="hos-patients.html">Ventes ou sortie</a>
                 </li>
                 <li class="active">
-                    <strong>Modification d'un produit</strong>
+                    <strong>Modification d'une sortie</strong>
                 </li>
             </ol>
         </div>
@@ -49,28 +49,32 @@
                     {{ session('status') }}
                 </div>
                 @endif
-                <form action="{{route('drugs.update', $drug->id)}}" method="post">
+                <form action="{{route('sales.update', $sale)}}" method="post" enctype="multipart/form-data">
                     @csrf
                     @METHOD('PUT')
+                    <input type="hidden" name="item_type" value="product">
+                    <input type="hidden" name="previous_value" value="{{$sale->quantity}}">
 
                     <div class="col-xl-8 col-lg-8 col-md-9 col-12">
                         <div class="form-group">
-                            <label class="form-label" for="label_categorie">Libellé du médicament</label>
-                            <input type="text" name="name" class="form-control" value="{{$drug->name}}">
+                            <label class="form-label" for="item_type">Produit/Matériel</label>
+                            <select name="drug" class="form-control selectpicker" data-live-search="true" id="drug" disabled>
+                                <option value="{{$sale->drug->id}}" selected>{{$sale->drug->name}}</option>
+                            </select>
                         </div>
                         <div class="form-group">
-                            <label class="form-label" for="label_categorie">Description</label>
-                            <textarea name="description" class="form-control" >{{$drug->description}}</textarea>
+                            <label class="form-label" for="drug">Quantité</label>
+                            <input type="number" name="quantity" id="quantity" value="{{$sale->quantity}}" min="0" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label" for="drug">Prix de vente</label>
+                            <input type="number" name="sale_price" id="sale_price" value="{{$sale->sale_price}}" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label" for="drug">Date de sortie</label>
+                            <input type="date" name="sale_date" id="sale_date" value="{{$sale->sale_date}}" required>
                         </div>
 
-                        <div class="form-group">
-                            <label class="form-label" for="currentStock">Stock actuel</label>
-                            <input type="number" min="0" name="currentStock" class="form-control" value="{{$drug->currentStock}}">
-                        </div>
-                        <div class="form-group">
-                            <label class="form-label" for="alertStock">Stock alerte</label>
-                            <input type="number" min="0" name="alertStock" class="form-control" value="{{$drug->alertStock}}">
-                        </div>
                     </div>
 
                     <div class="col-xl-8 col-lg-8 col-md-9 col-12 padding-bottom-30">

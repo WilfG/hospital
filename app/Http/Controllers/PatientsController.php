@@ -8,6 +8,7 @@ use App\Models\Country;
 use App\Models\Patient;
 use App\Models\State;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Validator;
 use Throwable;
@@ -60,32 +61,8 @@ class PatientsController extends Controller
                 return in_array($fileMimeType, $allowedMimeTypes);
             });
 
-            $validator = Validator::make($request->only(
-                [
-                    'lastname',
-                    'middlename',
-                    'firstname',
-                    'gender',
-                    'city',
-                    'country',
-                    'region',
-                    'occupation',
-                    'birthdate',
-                    'phoneNumber',
-                    'maritalStatus',
-                    'height',
-                    'weight',
-                    'allergies',
-                    'owndeseases',
-                    'familydeseases',
-                    'postalcode',
-                    'address',
-                    'childnumber',
-                    'bloodgroup',
-                    'civility',
-                ]
-            ), [
-                'lastname' => ['required', 'string'],
+            $validator = Validator::make($request->all(), [
+                'lastname' => ['required','string'],
                 'middlename' => ['nullable', 'string'],
                 'firstname' => ['required', 'string'],
                 'gender' => ['nullable', 'string'],
@@ -145,6 +122,9 @@ class PatientsController extends Controller
             }
         } catch (\Throwable $th) {
             Log::channel('gestion_patients')->info(auth()->user()->lastname . ' ' . auth()->user()->firstname . ' a essayé d\'enregistrer un patient');
+            if (str_contains($th->getMessage() , 'Duplicate entry')) {
+                return redirect()->back()->with('errors', 'Ce patient existe déjà');
+            }
             return redirect()->back()->with('errors', $th->getMessage());
         }
     }
@@ -154,10 +134,16 @@ class PatientsController extends Controller
      */
     public function show(string $id)
     {
+
+        // dd($request);
+        $checkPermission = $this->checkPermission(auth()->user()->id, 'Voir le dossier d\'un patient');
+        if ($checkPermission == false) {
+            return redirect()->back()->with('errors', "Vous n'avez pas la permission voir le dossier d'un patient.");
+        }
         $countries = Country::all();
         $states = State::all();
         $cities = City::all();
-        $patient = Patient::with(['consultations', 'payments', 'appointments'])->where('id',$id)->first();
+        $patient = Patient::with(['consultations', 'payments', 'appointments'])->where('id', $id)->first();
         $count_consult = count($patient->consultations->toarray());
         $count_paymt = count($patient->payments->toarray());
         $count_rdv = count($patient->appointments->toarray());
@@ -327,6 +313,23 @@ class PatientsController extends Controller
     public function fetchCity(Request $request)
     {
         $data['cities'] = City::where("state_id", $request->state_id)->get(["name", "id"]);
+        return response()->json($data);
+    }
+    public function fetchPatientsTot(Request $request)
+    {
+        $data['patients'] = DB::table('patients') // Total des patients du mois
+            ->whereBetween('created_at', [$request->dateFrom, $request->datoTo])->count();
+        return response()->json($data);
+    }
+
+    public function fetchSalesTot(Request $request)
+    {
+        $data['salestot'] = DB::table('sales') // Total des ventes d'une periode
+            ->join('drugs', 'sales.drug_id', 'drugs.id')
+            ->whereBetween('sales.sale_date', [$request->dateFrom . ' 00:00:00', $request->dateTo . ' 23:59:59'])
+            // ->selectRaw('SUM(quantity * sale_price) as total_sales')
+            // ->value('total_sales');
+            ->get(['sales.*', 'drugs.name']);
         return response()->json($data);
     }
 }

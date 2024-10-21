@@ -5,7 +5,7 @@
     <div class="row">
         <div class="col-md-12 col-sm-12 col-xs-12">
 
-            <a href="{{route('materiels.create')}}" class="btn btn-primary" title="Enregistrer un médicament"><i class="fa fa-plus-circle"></i> Enregistrer un médicament</a>
+            <a href="{{route('materiels.create')}}" class="btn btn-primary" title="Enregistrer un matériel"><i class="fa fa-plus-circle"></i> Enregistrer un matériel</a>
 
             <!-- ********************************************** -->
 
@@ -37,7 +37,7 @@
                     <tr>
                         <td>#</td>
                         <td>{{$materiel->name}}</td>
-                        <td>{{$materiel->description}}</td>
+                        <td>{!!$materiel->description!!}</td>
                         <td style="display:flex;">
                             <a href="{{route('materiels.edit', $materiel->id)}}" class="btn btn-warning btn-sm" style="margin: 2px;"><i class="fa fa-pencil" title="Modifier"></i></a>
                             <form action="{{route('materiels.destroy', $materiel->id)}}" method="POST">
