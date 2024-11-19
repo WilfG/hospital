@@ -44,7 +44,7 @@
                     <tr>
                         <td>
                             <a href="{{ route('tickets.show', $ticket->id) }}">
-                                {{ $ticket->title . "(". $ticket->messages->count() . ")" }}
+                                {{ $ticket->title . "(". $ticket->messages->count() . ")"}}
                             </a>
                             (Administrateur: {{ $ticket->assignedTo->lastname . ' '. $ticket->assignedTo->firstname}}, Assigné à: {{ $ticket->assignedUsers->pluck('firstname')->join(', ') }})
 
@@ -58,9 +58,14 @@
                     @foreach ($tickets as $ticket)
                     <tr>
                         <td>
-                            <a href="{{ route('tickets.show', $ticket->id) }}">
-                                {{ $ticket->title }} (Assigné à: {{ $ticket->assignedTo ? $ticket->assignedTo->name : 'Non assigné' }})
+                             <a href="{{ route('tickets.show', $ticket->id) }}">
+                                {{ $ticket->title . "(". $ticket->messages->count() . ")"}}
                             </a>
+                            (Administrateur: {{ $ticket->assignedTo->lastname . ' '. $ticket->assignedTo->firstname}}, Assigné à: {{ $ticket->assignedUsers->pluck('firstname')->join(', ') }})
+
+                        </td>
+                        <td>
+                            <a href="#" class="btn btn-warning btn-sm" disabled style="margin: 2px;"><i class="fa fa-pencil" title="Vous n'êtes pas administrateur, vous ne pouvez pas modifier cette discussion."></i></a>
                         </td>
                     </tr>
                     @endforeach

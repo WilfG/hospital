@@ -49,7 +49,7 @@
                     {{ session('status') }}
                 </div>
                 @endif
-                <form action="{{route('sales.store')}}" method="post" enctype="multipart/form-data">
+                <form action="{{route('sales.store')}}" method="post" id="myform" enctype="multipart/form-data">
                     @csrf
                     @METHOD('POST')
                     <input type="hidden" name="item_type" value="product">
@@ -59,7 +59,7 @@
                         <div class="form-group">
                             <label class="form-label" for="item_type">Produit/Matériel</label>
 
-                            <select name="drug" class="form-control" id="drug">
+                            <select name="drug" class="form-control selectpicker" id="drug">
                                 <option value=""></option>
                                 @foreach($drugs as $drug)
                                 <option value="{{$drug->id}}">{{$drug->name}}</option>
@@ -71,7 +71,7 @@
                             <input type="number" name="quantity" id="quantity" min="0" required>
                         </div>
                         <div class="form-group">
-                            <label class="form-label" for="drug">Prix de vente</label>
+                            <label class="form-label" for="drug">Prix unitaire de vente</label>
                             <input type="number" name="sale_price" id="sale_price" required>
                         </div>
                         <div class="form-group">
@@ -83,7 +83,7 @@
 
                     <div class="col-xl-8 col-lg-8 col-md-9 col-12 padding-bottom-30">
                         <div class="text-left">
-                            <button type="submit" class="btn btn-primary">Enregistrer</button>
+                            <button type="submit" class="btn btn-primary"  id="submit">Enregistrer</button>
                         </div>
                     </div>
                 </form>

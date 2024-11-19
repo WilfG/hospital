@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Material;
+use App\Models\Typemateriel;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Validator;
@@ -24,7 +25,8 @@ class MaterialController extends Controller
      */
     public function create()
     {
-        return view('materiels.create');
+        $types = Typemateriel::all();
+        return view('materiels.create', compact('types'));
     }
 
     /**
@@ -34,12 +36,13 @@ class MaterialController extends Controller
     {
         try {
             //code...
-            $validator = Validator::make($request->only('name', 'currentStock', 'alertStock', 'description', 'magStock') ,[
+            $validator = Validator::make($request->only('name', 'currentStock', 'alertStock', 'description', 'magStock', 'type_mat') ,[
                 'name' => 'required|string',
                 'currentStock' => 'required|numeric',
                 'alertStock' => 'required|numeric',
                 'magStock' => 'required|numeric',
                 'description' => 'required|string',
+                'type_mat' => 'required|numeric',
             ]);
             
             if ($validator->fails()) {
@@ -53,7 +56,8 @@ class MaterialController extends Controller
                 'currentStock' => $request->currentStock,
                 'alertStock' => $request->alertStock,
                 'stockMag' => $request->magStock,
-                'description' => $request->description
+                'description' => $request->description,
+                'type_id' => $request->type_mat
             ]);
             if ($materiel) {
                 Log::channel('gestion_stock_log')->info(auth()->user()->lastname . ' ' . auth()->user()->firstname . ' a ajouté le médicament ' . $request->name);
@@ -79,8 +83,9 @@ class MaterialController extends Controller
      */
     public function edit($id)
     {
+        $types = Typemateriel::all();
         $materiel = Material::findOrFail($id);
-        return view('materiels.edit', compact('materiel'));
+        return view('materiels.edit', compact('materiel', 'types'));
     }
 
     /**
@@ -89,11 +94,12 @@ class MaterialController extends Controller
     public function update(Request $request, $id)
     {
         try {
-            $validator = Validator::make($request->only('name', 'currentStock', 'alertStock', 'description', 'magStock') ,[
+            $validator = Validator::make($request->only('name', 'currentStock', 'alertStock', 'description', 'magStock', 'type_mat') ,[
                 'name' => 'nullable|string',
                 'currentStock' => 'nullable|numeric',
                 'alertStock' => 'nullable|numeric',
                 'magStock' => 'nullable|numeric',
+                'type_mat' => 'nullable|numeric',
                 'description' => 'nullable|string',
             ]);
             
@@ -106,7 +112,13 @@ class MaterialController extends Controller
             $material = Material::findOrFail($id);
 
             if ($material) {
-                $material->update($request->all());
+                $material->update([
+                    'name' => $request->name,
+                    'currentStock' => $request->currentStock,
+                    'alertStock' => $request->alertStock,
+                    'stockMag' => $request->magStock,
+                    'description' => $request->description,
+                    'type_id' => $request->type_mat]);
                 Log::channel('gestion_stock_log')->info(auth()->user()->lastname . ' ' . auth()->user()->firstname . ' a modifié le matériel ' . $request->name);
                 return redirect()->route('materiels.index')->with('success', 'Matériel modifié avec succès');
             }

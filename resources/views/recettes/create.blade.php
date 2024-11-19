@@ -7,7 +7,7 @@
     <div class="page-title">
 
         <div class="float-left">
-            <h1 class="title">Enregistrement d'une dépense</h1>
+            <h1 class="title">Enregistrement d'une recette</h1>
         </div>
 
         <div class="float-right d-none">
@@ -19,7 +19,7 @@
                     <a href="hos-patients.html">Dépenses</a>
                 </li>
                 <li class="active">
-                    <strong>Enregistrement d'une dépense</strong>
+                    <strong>Enregistrement d'une recette</strong>
                 </li>
             </ol>
         </div>
@@ -49,43 +49,20 @@
                     {{ session('status') }}
                 </div>
                 @endif
-                <form action="{{route('expenses.store')}}" method="post"  id="myform" enctype="multipart/form-data">
+                <form action="{{route('recettes.store')}}" method="post"  id="myform" enctype="multipart/form-data">
                     @csrf
                     @METHOD('POST')
 
-                    <input type="hidden" name="reqExpense" value="{{$reqExpense->id}}">
-
                     <div class="col-xl-8 col-lg-8 col-md-9 col-12">
                         <div class="form-group">
-                            <label class="form-label" for="label_categorie">Titre</label>
-                            <input type="text" class="form-control" readonly value="{{$reqExpense->reason}}">
+                            <label class="form-label" for="label_categorie">Libellé</label>
+                            <input type="text" name="label" class="form-control" value="{{old('label')}}">
                         </div>
                         <div class="form-group">
                             <label class="form-label" for="label_categorie">Montant</label>
-                            <input type="text" class="form-control" readonly value="{{$reqExpense->amount}}">
+                            <input type="text" name="cost" class="form-control" value="{{old('cost')}}">
                         </div>
-                        <div class="form-group">
-                            <label class="form-label" for="label_categorie">Description</label>
-                            <input type="text" class="form-control" readonly value="{!!$reqExpense->note!!}">
-                        </div>
-                        <div class="form-group">
-                            <label class="col-sm-4 control-label form-label" for="label_categorie">Catégories</label>
-                            <div class="col-sm-8" id="categorie" >
-
-                               
-                                
-                            </div>
-                        </div>
-
-
-                        <div class="form-group">
-                            <label class="form-label" for="reason">justificatif</label>
-                            <span class="desc"></span>
-                            <div class="controls">
-                                <input type="file" name="justificatif" class="form-control" id="reason">
-                            </div>
-                        </div>
-
+                       
 
                     </div>
 

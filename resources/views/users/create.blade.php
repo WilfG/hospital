@@ -15,7 +15,7 @@
 @endif
 
 
-<form class="form-horizontal" action="{{ route('users.store') }}" method="POST" enctype="multipart/form-data">
+<form class="form-horizontal" action="{{ route('users.store') }}" method="POST" id="myform" enctype="multipart/form-data">
     @csrf
     @METHOD('POST')
     <div class="form-group row">
@@ -83,7 +83,7 @@
 
     <div class="form-group row">
         <div class="offset-sm-2 col-sm-10">
-            <button type="submit" class="btn btn-success">Enrégistrer</button>
+            <button type="submit" class="btn btn-success" id="submit">Enrégistrer</button>
         </div>
     </div>
 </form>

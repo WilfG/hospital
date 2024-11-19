@@ -7,7 +7,7 @@
     <div class="page-title">
 
         <div class="float-left">
-            <h1 class="title">Enregistrement d'une Rendez-vous</h1>
+            <h1 class="title">Approvisionnement matériels</h1>
         </div>
 
         <div class="float-right d-none">
@@ -16,10 +16,10 @@
                     <a href="index.html"><i class="fa fa-home"></i>Accueil</a>
                 </li>
                 <li>
-                    <a href="hos-patients.html">Rendez-vous</a>
+                    <a href="hos-patients.html">Gestion du stock</a>
                 </li>
                 <li class="active">
-                    <strong>Enregistrement d'un Rendez-vous </strong>
+                    <strong>Approvisionnement matériels</strong>
                 </li>
             </ol>
         </div>
@@ -49,32 +49,49 @@
                     {{ session('status') }}
                 </div>
                 @endif
-                <form action="{{route('appointments.store')}}" method="post" id="myform" enctype="multipart/form-data">
+                <form action="{{route('purchases_mat.store')}}" method="post" id="myform" enctype="multipart/form-data">
                     @csrf
                     @METHOD('POST')
 
                     <div class="col-xl-8 col-lg-8 col-md-9 col-12">
+
+
                         <div class="form-group">
-                            <label for="patient" class="form-label">Patient</label>
-                            <select class="form-control" id="patient" name="patient">
-                                <option value="">Choisir le patient...</option>
-                                @foreach ($patients as $patient)
-                                <option value="{{$patient->id}}">{{$patient->firstname}} {{$patient->lastname}}</option>
+                            <label class="form-label" for="usage_type">Type d'approvisionnement</label>
+                            <select name="usage_type" class="form-control selectpicker" id="usage_type" data-live-search="true">
+                                <option value=""></option>
+                                <option value="mag"> Pour magasin</option>
+                                <option value="stock"> Pour centre</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group" id="">
+                            <label class="form-label" for="material">Equipements</label>
+                            <select name="material" class="form-control selectpicker" data-live-search="true" id="">
+                                <option value=""></option>
+                                @foreach($materiels as $materiel)
+                                <option value="{{$materiel->id}}">{{$materiel->name}}</option>
                                 @endforeach
                             </select>
-
-                        </div>
-                        
-                        <div class="form-group">
-                            <label class="form-label" for="appointment_time">Date du Rendez-vous</label>
-                            <input type="datetime-local" name="appointment_time" class="form-control" value="{{old('appointment_time')}}">
                         </div>
 
+
                         <div class="form-group">
-                            <label class="form-label" for="notes">Notes</label>
-                            <textarea name="notes" class="form-control">{{old('notes')}}</textarea>
+                            <label class="form-label" for="label_categorie">Quantité</label>
+                            <input type="number" name="quantity" id="quantity" class="form-control" value="{{old('quantity')}}">
                         </div>
+                        <div class="form-group">
+                            <label class="form-label" for="cost">Prix d'acquisition</label>
+                            <input type="number" step="0.1" name="cost" id="cost" class="form-control" value="{{old('cost')}}">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label" for="label_categorie">Date d'approvisionnement</label>
+                            <input type="date" name="purchase_date" id="purchase_date" class="form-control" value="{{old('movement_date')}}">
+                        </div>
+
+
                     </div>
+
                     <div class="col-xl-8 col-lg-8 col-md-9 col-12 padding-bottom-30">
                         <div class="text-left">
                             <button type="submit" class="btn btn-primary" id="submit">Enregistrer</button>

@@ -36,9 +36,9 @@ class ConsultationController extends Controller
     public function store(Request $request)
     {
         try {
-            $checkPermission = $this->checkPermission(auth()->user()->id, 'Enregistrer une dépense');
+            $checkPermission = $this->checkPermission(auth()->user()->id, 'Enregistrer une consultation');
             if ($checkPermission == false) {
-                return redirect()->back()->with('errors', "Vous n'avez pas la permission d'Enregistrer une dépense.");
+                return redirect()->back()->with('errors', "Vous n'avez pas la permission d'Enregistrer une consultation.");
             }
 
             // Validator::extend('custom_file_type', function ($attribute, $value, $parameters, $validator) {

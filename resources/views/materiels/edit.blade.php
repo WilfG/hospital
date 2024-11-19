@@ -49,7 +49,7 @@
                     {{ session('status') }}
                 </div>
                 @endif
-                <form action="{{route('materiels.update', $materiel->id)}}" method="post">
+                <form action="{{route('materiels.update', $materiel->id)}}" method="post" id="myform" enctype="multipart/form-data">
                     @csrf
                     @METHOD('PUT')
 
@@ -60,27 +60,41 @@
                         </div>
                         <div class="form-group">
                             <label class="form-label" for="label_categorie">Description</label>
-                            <textarea name="description" class="form-control" >{{$materiel->description}}</textarea>
+                            <textarea name="description" class="form-control">{{$materiel->description}}</textarea>
                         </div>
                         <div class="form-group">
                             <label class="form-label" for="currentStock">Stock actuel</label>
-                            <input type="number" min="0" name="currentStock" class="form-control" value="{{old('currentStock')}}">
+                            <input type="number" min="0" name="currentStock" class="form-control" value="{{$materiel->currentStock}}">
                         </div>
                         <div class="form-group">
                             <label class="form-label" for="alertStock">Stock alerte</label>
-                            <input type="number" min="0" name="alertStock" class="form-control" value="{{old('alertStock')}}">
+                            <input type="number" min="0" name="alertStock" class="form-control" value="{{$materiel->alertStock}}">
                         </div>
                         <div class="form-group">
                             <label class="form-label" for="magStock">Stock au magasin</label>
-                            <input type="number" min="0" name="magStock" class="form-control" value="{{old('magStock')}}">
+                            <input type="number" min="0" name="magStock" class="form-control" value="{{$materiel->stockMag}}">
                         </div>
-                        
+                        <div class="form-group">
+                            <label class="form-label" for="label_categorie">Type de matériel</label>
+                            <select name="type_mat" id="type_mat" class="form-control selectpicker" data-live-search="true">
+                                @foreach($types as $type)
+                                @php
+                                if($type->id == $materiel->type_id){
+                                $selected = 'selected';
+                                }else{
+                                $selected = '';
+                                }
+                                @endphp
 
+                                <option value="{{$type->id}}" selected="{{$selected}}">{{$type->label_type}}</option>
+                                @endforeach
+                            </select>
+                        </div>
                     </div>
 
                     <div class="col-xl-8 col-lg-8 col-md-9 col-12 padding-bottom-30">
                         <div class="text-left">
-                            <button type="submit" class="btn btn-primary">Enregistrer</button>
+                            <button type="submit" class="btn btn-primary" id="submit">Enregistrer</button>
                         </div>
                     </div>
                 </form>

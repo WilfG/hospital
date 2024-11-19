@@ -69,21 +69,27 @@
     <div class="col-md-12">
         <ul class="topstats clearfix">
             <li class="arrow"></li>
-            <li class="col-xs-6 col-lg-4">
-                <span class="title"><i class="fa fa-dot-circle-o"></i> Ventes du jour</span>
+            <li class="col-xs-6 col-lg-3">
+                <span class="title"><i class="fa fa-dot-circle-o"></i> Ventes du jour(Pharmacie)</span>
                 <h3>{{$totDaySales}}</h3>
-                <span class="diff"><b class="color-down"><i class="fa fa-caret-down"></i> FCFA%</b> Aujourd'hui</span>
+                <span class="diff"><b class="color-down"><i class="fa fa-caret-down"></i> FCFA</b> Aujourd'hui</span>
             </li>
-            <li class="col-xs-6 col-lg-4">
-                <span class="title"><i class="fa fa-calendar-o"></i> Vente du mois</span>
+            <li class="col-xs-6 col-lg-3">
+                <span class="title"><i class="fa fa-calendar-o"></i> Vente du mois (Pharmacie)</span>
                 <h3>{{$totMonthSales}}</h3>
                 <span class="diff"><b class="color-up"><i class="fa fa-caret-up"></i> FCFA</b> Ce mois seulement</span>
             </li>
-            <li class="col-xs-6 col-lg-4">
-                <span class="title"><i class="fa fa-shopping-cart"></i> Tot. Patients mois</span>
-                <h3 class="color-up">{{$totCurrentMthPatients}}</h3>
-                <span class="diff"><b class="color-up"><i class="fa fa-caret-up"></i> Ce mois seulement</b> </span>
+            <li class="col-xs-6 col-lg-3">
+                <span class="title"><i class="fa fa-dot-circle-o"></i> Recettes du jour (autres)</span>
+                <h3>{{$totDayRecettes}}</h3>
+                <span class="diff"><b class="color-down"><i class="fa fa-caret-down"></i> FCFA</b> Aujourd'hui</span>
             </li>
+            <li class="col-xs-6 col-lg-3">
+                <span class="title"><i class="fa fa-calendar-o"></i> Recette totale du mois(autres)</span>
+                <h3>{{$totMonthRecettes}}</h3>
+                <span class="diff"><b class="color-up"><i class="fa fa-caret-up"></i> FCFA</b> Ce mois seulement</span>
+            </li>
+
             <!-- <li class="col-xs-6 col-lg-2">
                         <span class="title"><i class="fa fa-users"></i> Visitors</span>
                         <h3>960</h3>
@@ -100,6 +106,18 @@
                         <span class="diff"><b class="color-up"><i class="fa fa-caret-up"></i> 26%</b> from last week</span>
                     </li> -->
         </ul>
+    </div>
+    <div class="col-md-12">
+        <li class="col-xs-6 col-lg-6">
+            <span class="title"><i class="fa fa-shopping-cart"></i> Tot. Global du mois</span>
+            <h2 class="color-down">{{$totMonthRecettes + $totMonthSales}}</h2>
+            <span class="diff"><b class="color-up"><i class="fa fa-caret-up"></i> Ce mois seulement</b> </span>
+        </li>
+        <li class="col-xs-6 col-lg-6">
+            <span class="title"><i class="fa fa-shopping-cart"></i> Tot. Patients mois</span>
+            <h3 class="color-up">{{$totCurrentMthPatients}}</h3>
+            <span class="diff"><b class="color-up"><i class="fa fa-caret-up"></i> Ce mois seulement</b> </span>
+        </li>
     </div>
     <!-- End Top Stats -->
 

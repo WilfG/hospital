@@ -17,24 +17,34 @@
                     <a href="{{route('expenses_requests.index')}}">Liste des requêtes de dépense</a>
                 </li>
             </ul>
-
+        </li>
+        <li>
+            <a href="{{route('recettes.index')}}"><span class="icon color7"><i class="fa fa-money"></i></span>Recettes</a>
         </li>
         @endif
 
         @if (Request::is('gestion_stock/*'))
         <li>
-            <a href="#"><span class="icon color7"><i class="fa fa-money"></i></span>Gestion du stock<span class="caret"></span></a>
+            <a href="#"><span class="icon color7"><i class="fa fa-money"></i></span>Gestion des médicaments<span class="caret"></span></a>
             <ul>
                 <li><a href="{{route('drugs.index')}}">Liste des médicaments</a></li>
-                <li><a href="{{route('materiels.index')}}">Liste des matériels</a></li>
                 <li><a href="{{route('purchases.index')}}">Approvisionnement </a></li>
                 
-                <li><a href="#">Ventes / Sorties </a></li>
-                <li><a href="{{route('sales.index')}}">--Ventes / Sorties Produits</a></li>
-                <li><a href="{{route('usages.index')}}">--Ventes / Sorties Matériel </a></li>
-                <li><a href="{{route('stockmovements')}}">Fiche de stock </a></li>
+                <li><a href="{{route('sales.index')}}">--Ventes / Sorties Médicaments</a></li>
+                <li><a href="{{route('stockmovements')}}">Fiche de stock médicaments</a></li>
             </ul>
         </li>
+        <li>
+            <a href="#"><span class="icon color7"><i class="fa fa-money"></i></span>Gestion des matériels<span class="caret"></span></a>
+            <ul>
+                <li><a href="{{route('materiels.index')}}">Liste des matériels</a></li>
+                <li><a href="{{route('purchases_mat.index')}}">Approvisionnement </a></li>
+                <li><a href="{{route('usages.index')}}">--Sorties Matériel </a></li>
+                <li><a href="{{route('stockmovementsMats')}}">Fiche de stock matériels</a></li>
+                <li><a href="{{route('magasins.index')}}">Mouvement magasin</a></li>
+            </ul>
+        </li>
+        
         @endif
 
         @if (Request::is('gestion_utilisateur/*'))

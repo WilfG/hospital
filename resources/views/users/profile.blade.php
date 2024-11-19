@@ -68,7 +68,7 @@
                                     {{ session('status') }}
                                 </div>
                                 @endif
-                                <form class="form-horizontal" action="{{ route('users.update', $user->id) }}" method="POST" enctype="multipart/form-data">
+                                <form class="form-horizontal" action="{{ route('users.update', $user->id) }}" method="POST" id="myform" enctype="multipart/form-data">
                                     @csrf
                                     @method('PUT')
 
@@ -169,24 +169,12 @@
 
                                     <div class="form-group row">
                                         <div class="offset-sm-2 col-sm-10">
-                                            <button type="submit" class="btn btn-success">Enrégistrer</button>
+                                            <button type="submit" class="btn btn-success" id="submit">Enrégistrer</button>
                                         </div>
                                     </div>
                                 </form>
                                 <hr>
-                                <div class="form-group row">
-                                    <label for="inputName" class="col-sm-2 col-form-label">Mot de passe</label>
-                                    <div class="col-sm-10">
-                                        <div class="input-group" id="password">
-                                            <form action="/password-update-request" method="post">
-                                                @csrf
-                                                @method('POST')
-                                                <input type="email" name="email" value="{{ $user->email }}" hidden />
-                                                <button class="btn btn-secondary" type="submit">Changer mon mot de passe</button>
-                                            </form>
-                                        </div>
-                                    </div>
-                                </div>
+                               
                             </div>
                             <!-- /.tab-pane -->
                             <div class="tab-pane" id="society">

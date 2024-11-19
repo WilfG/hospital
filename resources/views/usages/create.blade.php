@@ -49,7 +49,7 @@
                     {{ session('status') }}
                 </div>
                 @endif
-                <form action="{{route('usages.store')}}" method="post" enctype="multipart/form-data">
+                <form action="{{route('usages.store')}}" method="post" id="myform" enctype="multipart/form-data">
                     @csrf
                     @METHOD('POST')
                     <input type="hidden" name="item_type" value="product">
@@ -59,11 +59,19 @@
                         <div class="form-group">
                             <label class="form-label" for="item_type">Matériel</label>
 
-                            <select name="drug" class="form-control" id="drug">
+                            <select name="material" class="form-control selectpicker" id="material" data-live-search="true">
                                 <option value=""></option>
-                                @foreach($drugs as $drug)
-                                <option value="{{$drug->id}}">{{$drug->name}}</option>
+                                @foreach($materials as $material)
+                                <option value="{{$material->id}}">{{$material->name}}</option>
                                 @endforeach
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label" for="usage_type">Type de sortie</label>
+                            <select name="usage_type" class="form-control selectpicker" id="usage_type" data-live-search="true">
+                            <option value=""></option>    
+                            <option value="mag"> Sortie de magasin</option>
+                                <option value="stock"> Sortie pour usage</option>
                             </select>
                         </div>
                         <div class="form-group">
@@ -83,7 +91,7 @@
 
                     <div class="col-xl-8 col-lg-8 col-md-9 col-12 padding-bottom-30">
                         <div class="text-left">
-                            <button type="submit" class="btn btn-primary">Enregistrer</button>
+                            <button type="submit" class="btn btn-primary" id="submit">Enregistrer</button>
                         </div>
                     </div>
                 </form>

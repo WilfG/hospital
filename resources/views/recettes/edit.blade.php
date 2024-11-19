@@ -7,7 +7,7 @@
     <div class="page-title">
 
         <div class="float-left">
-            <h1 class="title">Enregistrement d'une permission</h1>
+            <h1 class="title">Modification d'une recette</h1>
         </div>
 
         <div class="float-right d-none">
@@ -16,10 +16,10 @@
                     <a href="index.html"><i class="fa fa-home"></i>Accueil</a>
                 </li>
                 <li>
-                    <a href="hos-patients.html">Permissions</a>
+                    <a href="hos-patients.html">Recettes</a>
                 </li>
                 <li class="active">
-                    <strong>Enregistrement d'une permission</strong>
+                    <strong>Modification d'une recette</strong>
                 </li>
             </ol>
         </div>
@@ -49,27 +49,25 @@
                     {{ session('status') }}
                 </div>
                 @endif
-                <form action="{{route('permissions.store')}}" method="post"  id="myform" enctype="multipart/form-data">
+                <form action="{{route('recettes.update', $recette->id)}}" method="post" id="myform" enctype="multipart/form-data">
                     @csrf
-                    @METHOD('POST')
+                    @METHOD('PUT')
+
                     <div class="col-xl-8 col-lg-8 col-md-9 col-12">
-                      
-
                         <div class="form-group">
-                            <label class="form-label" for="label">Libellé de la permission</label>
-                            <span class="desc"></span>
-                            <div class="controls">
-                                <input type="text" name="label" value="{{old('label')}}" class="form-control" id="label" required>
-                            </div>
+                            <label class="form-label" for="label_categorie">Libellé</label>
+                            <input type="text" name="label" class="form-control" value="{{$recette->label}}">
                         </div>
-                       
-
+                        <div class="form-group">
+                            <label class="form-label" for="label_categorie">Montant</label>
+                            <input type="text" name="cost" class="form-control" value="{{$recette->cost}}">
+                        </div>
 
                     </div>
 
                     <div class="col-xl-8 col-lg-8 col-md-9 col-12 padding-bottom-30">
                         <div class="text-left">
-                            <button type="submit" class="btn btn-primary" id="submit">Enregistrer</button>
+                            <button type="submit" class="btn btn-primary">Enregistrer</button>
                         </div>
                     </div>
                 </form>

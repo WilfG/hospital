@@ -403,20 +403,22 @@ class SaleController extends Controller
         $drugs = Drug::all();
         // dd($drugs);
         $materials = Material::all();
-        $stockMovements = StockMovement::orderBy('movement_date', 'asc')->get();
+        $stockMovements = StockMovement::where('item_type', 'product')->orderBy('movement_date', 'asc')->get();
         Log::channel('gestion_stock_log')->info(auth()->user()->lastname . ' ' . auth()->user()->firstname . ' a visité la fiche de stock');
         return view('stock.fiche', compact('stockMovements', 'materials', 'drugs', 'users'));
     }
 
     public function fiche_fifo_product($id)
     {
-        $users = User::all();
-        $drugs = Drug::all();
-        $materials = Material::all();
-        $sales = Sale::where('drug_id', $id)->get();
-        $purchases = Purchase::where('drug_id', $id)->get();
+        $movements =StockMovement::with(['sale', 'purchase'])->where('item_id', $id)->where('item_type', 'product')->get();
+        // dd($movements[1]->sale->drug->name);
+        // $users = User::all();
+        // $drugs = Drug::all();
+        // $materials = Material::all();
+        // $sales = Sale::where('drug_id', $id)->get();
+        // $purchases = Purchase::where('drug_id', $id)->get();
         $stockMovements = StockMovement::where('item_type', 'product')->where('item_id', $id)->orderBy('movement_date', 'asc')->get();
-        return view('stock.fiche_fifo', compact('stockMovements', 'sales', 'purchases', 'materials', 'drugs', 'users'));
+        return view('stock.fiche_fifo', compact('movements'));
     }
 
     public function fiche_fifo_materiel()

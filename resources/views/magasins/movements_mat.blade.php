@@ -3,12 +3,9 @@
 @section('content')
 <div class="content-body">
     <div class="row">
-        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
-            <a href="{{route('usages.create')}}" class="btn btn-primary" title="Enregistrer une sortie"><i class="fa fa-plus-circle"></i> Enregistrer une sortie de matériel</a>
-        </div>
-
-
         <div class="col-md-12 col-sm-12 col-xs-12">
+
+            <a href="{{route('materiels.create')}}" class="btn btn-primary" title="Enregistrer un matériel"><i class="fa fa-plus-circle"></i> Enregistrer un matériel</a>
 
             <!-- ********************************************** -->
 
@@ -28,33 +25,26 @@
                 <thead>
                     <tr>
                         <th>#</th>
-                        <th>Matériel</th>
+                        <th>Date</th>
+                        <th>Libellé</th>
                         <th>Quantité</th>
-                        <!-- <th>Prix de sortie</th> -->
-                        <th>Date de sortie</th>
+                        <th>Type de mouvement</th>
                         <th>Actions</th>
 
                     </tr>
                 </thead>
 
                 <tbody>
-                    @foreach($usages as $usage)
-                        @foreach($materials as $mat)
-                            @if($mat->id == $usage->item_id)
-                                @php
-                                    $material_name = $mat->name;
-                                @endphp
-                            @endif
-                        @endforeach
+                    @foreach($movements as $mov)
                     <tr>
                         <td>#</td>
-                        <td>{{$material_name}}</td>
-                        <td>{{$usage->quantity}}</td>
-                        <!-- <td>{{$usage->sale_price}}</td> -->
-                        <td>{{$usage->movement_date}}</td>
+                        <td>{{$mov->created_at}}</td>
+                        <td>{{$mov->material->name}}</td>
+                        <td>{{$mov->quantity}}</td>
+                        <td>@if($mov->movement_type == 'exit') {{'sortie'}} @else {{'entrée'}} @endif</td>
                         <td style="display:flex;">
-                            <!-- <a href="{{route('sales.edit', $usage->id)}}" class="btn btn-warning btn-sm" style="margin: 2px;"><i class="fa fa-pencil" title="Modifier"></i></a> -->
-                            <form action="{{route('usages.destroy', $usage->id)}}" method="POST" onsubmit="return confirmDelete()">
+                            <a href="{{route('materiels.edit', $mov->id)}}" class="btn btn-warning btn-sm" style="margin: 2px;"><i class="fa fa-pencil" title="Modifier"></i></a>
+                            <form action="{{route('magasins.destroy', $mov->id)}}" method="POST">
                                 @csrf
                                 @METHOD('DELETE')
                                 <button type="submit" class="btn btn-danger btn-sm" title="Supprimer"><i class="fa fa-trash"></i></button>
@@ -62,14 +52,11 @@
                         </td>
 
                     </tr>
-                   
                     @endforeach
                 </tbody>
             </table>
 
         </div>
     </div>
-</div>
-</section>
 </div>
 @endsection

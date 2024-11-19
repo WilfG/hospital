@@ -178,6 +178,12 @@ Below codes are only for index widgets
 
      });
 
+     //submit buttons event
+     $('#myform').on('submit', function(){
+      $('#submit').prop('disabled', true);
+     });
+
+
      //ticket reply
      $('#replyModal').on('show.bs.modal', function(event) {
        var button = $(event.relatedTarget); // Button that triggered the modal

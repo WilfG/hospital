@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Imports\DrugsImport;
 use App\Models\Drug;
+use App\Models\Magasin;
 use App\Models\Material;
 use App\Models\Purchase;
 use App\Models\Sale;
@@ -23,9 +24,10 @@ class MatUsagesController extends Controller
      */
     public function index()
     {
-        $usages = Sale::where();
-        Log::channel('gestion_stock_log')->info(auth()->user()->lastname . ' ' . auth()->user()->firstname . ' a visité la liste des ventes/sorties');
-        return view('usages.index', compact('usages'));
+        $usages = StockMovement::where('item_type', 'material')->get();
+        $materials = Material::all();
+        Log::channel('gestion_stock_log')->info(auth()->user()->lastname . ' ' . auth()->user()->firstname . ' a visité la liste des sorties de matériels');
+        return view('usages.index', compact('usages', 'materials'));
     }
 
     /**
@@ -33,8 +35,8 @@ class MatUsagesController extends Controller
      */
     public function create()
     {
-        $drugs = Material::all();
-        return view('usages.create', compact('drugs'));
+        $materials = Material::all();
+        return view('usages.create', compact('materials'));
     }
 
     /**
@@ -56,73 +58,70 @@ class MatUsagesController extends Controller
             if ($validator->fails()) {
                 return redirect()->back()->with('errors', $validator->errors());
             }
-            // dd($request->drug);
 
 
             // Implement FIFO logic for stock movement
             $quantityRemaining = $request->quantity;
+            // dd($quantityRemaining);
 
             while ($quantityRemaining > 0) {
-                $stockEntry = StockMovement::where('item_type', 'product')
-                    ->where('item_id', $request->drug)
+                $stockEntry = StockMovement::where('item_type', 'material')
+                    ->where('item_id', $request->material)
                     ->where('type', 'entry')
                     ->orderBy('movement_date', 'asc')
                     ->first();
 
-                $item = Drug::where('id', $request->drug)->first();
+                $item = Material::where('id', $request->material)->first();
                 // dd($item);
-
-                if ($item->currentStock < $request->quantity) {
-                    return redirect()->back()->with('errors', 'Le stock est insuffisant.');
+                if ($request->item_type == 'stock' && $item->currentStock < $request->quantity) {
+                 return redirect()->back()->with('errors', 'Le stock est insuffisant.');
                 }
 
 
-                $availableQuantity = $item->currentStock;
-                $quantityToDeduct = min($availableQuantity, $quantityRemaining);
+                // $availableQuantity = $item->currentStock;
+                // $quantityToDeduct = min($availableQuantity, $quantityRemaining);
 
-                // Update or create stock movement for the sale
-                $movement = StockMovement::create([
-                    'type' => 'exit',
-                    'item_type' => 'material',
-                    'item_id' => $request->drug,
-                    'quantity' => $quantityToDeduct,
-                    'movement_date' => $request->sale_date,
-                    'author' => auth()->user()->id,
-                ]);
-
-                $quantityRemaining -= $quantityToDeduct;
-
-                if ($movement) {
-                    $sale = Sale::create([
-                        'drug_id' => $request->drug,
-                        'quantity' => $request->quantity,
-                        // 'sale_price' => $request->sale_price,
-                        'sale_date' => $request->sale_date
+                if ($request->usage_type == 'mag') { //Sortie Magasin
+                    $magasin = Magasin::create([
+                        'material_id' => $request->material,
+                        'movement_type' => 'exit',
+                        'quantity' => $request->quantity
                     ]);
-                    // dd($request->quantity);
+                    if ($magasin) {
+                        # code...
+                        $item->update([
+                            'stockMag' => $item->stockMag - $request->quantity,
+                            'currentStock' => $item->currentStock + $request->quantity
+                        ]);
+                        Log::channel('gestion_stock_log')->info(auth()->user()->lastname . ' ' . auth()->user()->firstname . ' a effectué une sortie du matériel ' . $item->name . 'du magasin');
+                        return redirect()->back()->with('status', 'Sortie effectuée avec succes');
+                    }
+                } else { //Stock hopital
+                    // Update or create stock movement for the sale
+                    $movement = StockMovement::create([
+                        'type' => 'exit',
+                        'item_type' => 'material',
+                        'item_id' => $request->material,
+                        'quantity' => $$request->quantity,
+                        'movement_date' => $request->sale_date,
+                        'author' => auth()->user()->id,
+                    ]);
 
-                    if ($sale) {
-                        // dd($sale->drug);
-                        $sale->material->update([
-                            'currentStock' => $sale->material->currentStock - $request->quantity
+                    if ($movement) {
+
+                        $item->update([
+                            'currentStock' => $item->currentStock - $request->quantity
 
                         ]);
-                    }
-                    Log::channel('gestion_stock_log')->info(auth()->user()->lastname . ' ' . auth()->user()->firstname . ' a effectué une sortie du produit ' . $sale->drug->name);
-                }
 
-                // If the entry is fully consumed, delete it; otherwise, update the quantity
-                if ($availableQuantity == $quantityToDeduct) {
-                    $stockEntry->delete();
-                } else {
-                    $item->currentStock -= $quantityToDeduct;
-                    $item->save();
+                        // }
+                        Log::channel('gestion_stock_log')->info(auth()->user()->lastname . ' ' . auth()->user()->firstname . ' a effectué une sortie du matériel ' . $item->name);
+                        return redirect()->back()->with('status', 'Sortie effectuée avec succes');
+                    }
                 }
             }
-
-            return redirect()->back()->with('status', 'Sortie effectuée avec succes');
         } catch (\Throwable $th) {
-            Log::channel('gestion_facturation_log')->info(auth()->user()->lastname . ' ' . auth()->user()->firstname . ' a essayé de faire sortie le produit ' . $item->name . ' sans succès');
+            Log::channel('gestion_facturation_log')->info(auth()->user()->lastname . ' ' . auth()->user()->firstname . ' a essayé de faire sortie le matériel ' . $item->name . ' sans succès');
             return redirect()->back()->with('errors', $th->getMessage());
         }
     }
@@ -242,8 +241,8 @@ class MatUsagesController extends Controller
     public function import(Request $request)
     {
         $validator = Validator::make($request->all(), [
-               'file' => 'required|mimes:xls,xlsx'
-            
+            'file' => 'required|mimes:xls,xlsx'
+
         ]);
 
         if ($validator->fails()) {
@@ -255,11 +254,12 @@ class MatUsagesController extends Controller
         dd($file);
         Excel::import(new DrugsImport, $file);
 
-        
+
         return redirect()->back()->with('success', 'Users imported successfully.');
     }
 
-    public function importview(){
+    public function importview()
+    {
         return view('usages.upload');
     }
 }

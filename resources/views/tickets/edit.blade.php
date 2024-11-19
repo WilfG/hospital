@@ -49,7 +49,7 @@
                     {{ session('status') }}
                 </div>
                 @endif
-                <form method="post" action="{{ route('tickets.update', $ticket->id) }}">
+                <form method="post" action="{{ route('tickets.update', $ticket->id) }}"  id="myform" enctype="multipart/form-data">
                     @csrf
                     @METHOD('PUT')
                     <div class="form-group">
@@ -98,7 +98,7 @@
                             </select>
                         </div>
                     </div>
-                    <button type="submit" class="btn btn-primary">Enregistrer</button>
+                    <button type="submit" class="btn btn-primary" id="submit">Enregistrer</button>
                 </form>
             </div>
 

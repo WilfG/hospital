@@ -49,7 +49,7 @@
                     {{ session('status') }}
                 </div>
                 @endif
-                <form action="{{route('roles.store')}}" method="post">
+                <form action="{{route('roles.store')}}" method="post" id="myform" enctype="multipart/form-data">
                     @csrf
                     @METHOD('POST')
                     <div class="col-xl-8 col-lg-8 col-md-9 col-12">
@@ -90,7 +90,7 @@
 
                     <div class="col-xl-8 col-lg-8 col-md-9 col-12 padding-bottom-30">
                         <div class="text-left">
-                            <button type="submit" class="btn btn-primary">Enregistrer</button>
+                            <button type="submit" class="btn btn-primary" id="submit">Enregistrer</button>
                         </div>
                     </div>
                 </form>

@@ -49,7 +49,7 @@
                     {{ session('status') }}
                 </div>
                 @endif
-                <form method="POST" action="{{ route('tickets.store') }}">
+                <form method="POST" action="{{ route('tickets.store') }}"  id="myform" enctype="multipart/form-data">
                     @csrf
 
                     <div class="form-group">
@@ -75,7 +75,7 @@
 
                     <div class="row">
                             <div class="form-group col-lg-4 col-md-4 col-sm-4 col-xs-4">
-                                <label for="tags">Liste des personnes :</label>
+                                <label for="multiselect">Liste des personnes :</label>
                                 <select name="from" id="multiselect" class="form-control" multiple="multiple">
                                     @foreach($users as $user)
                                     <option value="{{ $user->id }}">{{ $user->firstname . ' ' . $user->lastname }}</option>
@@ -95,7 +95,7 @@
                                 </select>
                             </div>
                         </div>
-                    <button type="submit" class="btn btn-primary">Creer le Ticket</button>
+                    <button type="submit" class="btn btn-primary" id="submit">Creer le Ticket</button>
                 </form>
             </div>
 

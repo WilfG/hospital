@@ -49,7 +49,7 @@
                     {{ session('status') }}
                 </div>
                 @endif
-                <form action="{{route('purchases.store')}}" method="post" enctype="multipart/form-data">
+                <form action="{{route('purchases.store')}}" method="post" id="myform" enctype="multipart/form-data">
                     @csrf
                     @METHOD('POST')
 
@@ -73,16 +73,6 @@
                                 @endforeach
                             </select>
                         </div>
-                        <div class="form-group" id="material_group">
-                            <label class="form-label" for="material">Equipements</label>
-                            <select name="material" class="form-control selectpicker" data-live-search="true" id="material" >
-                                <option value=""></option>
-                                @foreach($materiels as $materiel)
-                                <option value="{{$materiel->id}}">{{$materiel->name}}</option>
-                                @endforeach
-                            </select>
-                        </div>
-
 
                         <div class="form-group">
                             <label class="form-label" for="label_categorie">Quantité</label>
@@ -102,7 +92,7 @@
 
                     <div class="col-xl-8 col-lg-8 col-md-9 col-12 padding-bottom-30">
                         <div class="text-left">
-                            <button type="submit" class="btn btn-primary">Enregistrer</button>
+                            <button type="submit" class="btn btn-primary" id="submit">Enregistrer</button>
                         </div>
                     </div>
                 </form>

@@ -46,7 +46,7 @@
                 <li><a href="{{url('/dashboard')}}"><i class="fa falist fa-money"></i>Tableau de bord</a></li>
                 <li><a href="{{route('patients.index')}}"><i class="fa falist fa-money"></i>Gestion des patients</a></li>
                 <li><a href="{{route('drugs.index')}}"><i class="fa falist fa-money"></i>Gestion des stocks</a></li>
-                <li><a href="{{route('expenses.index')}}"><i class="fa falist fa-money"></i>Gestion des dépenses</a></li>
+                <li><a href="{{route('expenses.index')}}"><i class="fa falist fa-money"></i>Gestion financière</a></li>
                 <li><a href="{{route('tickets.index')}}"><i class="fa falist fa-money"></i>Tickets</a></li>
                 <li><a href="{{route('users.index')}}"><i class="fa falist fa-user"></i>Gestion des utilisateurs</a></li>
             </ul>

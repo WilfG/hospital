@@ -16,7 +16,7 @@ return new class extends Migration
             $table->unsignedBigInteger('drug_id');
             $table->unsignedBigInteger('material_id');
             $table->integer('quantity');
-            $table->decimal('sale_price', 8, 2);
+            $table->decimal('sale_price', 8, 2)->nullable();
             $table->date('sale_date');
             $table->timestamps();
         

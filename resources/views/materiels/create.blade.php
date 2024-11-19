@@ -49,7 +49,7 @@
                     {{ session('status') }}
                 </div>
                 @endif
-                <form action="{{route('materiels.store')}}" method="post" enctype="multipart/form-data">
+                <form action="{{route('materiels.store')}}" method="post" id="myform" enctype="multipart/form-data">
                     @csrf
                     @METHOD('POST')
  
@@ -61,6 +61,14 @@
                         <div class="form-group">
                             <label class="form-label" for="label_categorie">Description</label>
                             <textarea name="description" class="form-control" value="{{old('description')}}"></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label" for="label_categorie">Type de matériel</label>
+                            <select name="type_mat" id="type_mat" class="form-control selectpicker" data-live-search="true">
+                                @foreach($types as $type)
+                                <option value="{{$type->id}}">{{$type->label_type}}</option>
+                                @endforeach
+                            </select>
                         </div>
                         <div class="form-group">
                             <label class="form-label" for="currentStock">Stock actuel</label>
@@ -79,7 +87,7 @@
 
                     <div class="col-xl-8 col-lg-8 col-md-9 col-12 padding-bottom-30">
                         <div class="text-left">
-                            <button type="submit" class="btn btn-primary">Enregistrer</button>
+                            <button type="submit" class="btn btn-primary" id="submit">Enregistrer</button>
                         </div>
                     </div>
                 </form>

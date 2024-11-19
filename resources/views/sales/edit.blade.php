@@ -49,7 +49,7 @@
                     {{ session('status') }}
                 </div>
                 @endif
-                <form action="{{route('sales.update', $sale)}}" method="post" enctype="multipart/form-data">
+                <form action="{{route('sales.update', $sale)}}" method="post" id="myform" enctype="multipart/form-data">
                     @csrf
                     @METHOD('PUT')
                     <input type="hidden" name="item_type" value="product">
@@ -79,7 +79,7 @@
 
                     <div class="col-xl-8 col-lg-8 col-md-9 col-12 padding-bottom-30">
                         <div class="text-left">
-                            <button type="submit" class="btn btn-primary">Enregistrer</button>
+                            <button type="submit" class="btn btn-primary" id="submit">Enregistrer</button>
                         </div>
                     </div>
                 </form>

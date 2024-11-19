@@ -25,9 +25,10 @@ class TicketController extends Controller
         $assignedTickets = Ticket::whereHas('assignedUsers', function ($query) use ($user) {
             $query->where('user_id', $user->id);
         })->get();
-
+        
         // Merge both collections and remove duplicates
         $tickets = $ownedTickets->merge($assignedTickets)->unique('id');
+        // dd($tickets);
         return view('tickets.index', compact('tickets'));
     }
 
